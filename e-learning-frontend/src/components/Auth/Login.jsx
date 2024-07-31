@@ -16,6 +16,10 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
       const userData = response.data.user; // Adjust according to your API response
+      const token = response.data.token;
+       // Save the token to localStorage
+      localStorage.setItem('token', token);
+      
       dispatch(login(userData));
       navigate('/profile');
     } catch (error) {
