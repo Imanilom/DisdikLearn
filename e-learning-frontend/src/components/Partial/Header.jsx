@@ -25,15 +25,15 @@ const Header = () => {
             <>
               <button
                 className="hover:bg-gray-500 px-3 py-2 rounded-md"
-                onClick={() => navigate('/profile')}
-              >
-                {user.name}
-              </button>
-              <button
-                className="hover:bg-gray-500 px-3 py-2 rounded-md"
                 onClick={() => navigate('/dashboard')}
               >
                 Dashboard ({user.role})
+              </button>
+              <button
+                className="hover:bg-gray-500 px-3 py-2 rounded-md"
+                onClick={() => navigate('/profile')}
+              >
+                {user.name}
               </button>
               {/* <button
                 className="hover:bg-gray-500 px-3 py-2 rounded-md"
