@@ -1,6 +1,5 @@
-// components/Profile.jsx
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LogoutButton from '../Auth/LogoutButton';
 import axios from 'axios';
@@ -9,25 +8,36 @@ const Profile = () => {
   // Access user information from the Redux state
   const user = useSelector((state) => state.auth.user);
   const token = localStorage.getItem('token');
-  const [name, setName] = useState(user ? user.name : '');
-  const [email, setEmail] = useState(user ? user.email : '');
-  const [password, setPassword] = useState(user ? user.password : '');
-  const [role] = useState(user ? user.role : ''); // Role usually shouldn't be editable by the user
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [password, setPassword] = useState('');
+  const [role] = useState(user?.role || ''); // Role usually shouldn't be editable by the user
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
+      // Prepare the data for update
+      const updateData = { name, email };
+      if (password) {
+        updateData.password = password; // Include password only if it's changed
+      }
+
       const response = await axios.patch(
         'http://localhost:3000/api/auth/me', // Replace with your API endpoint
-        { name, email, password },
+        updateData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+
+      // Optionally, update Redux state with new user data
+      dispatch({ type: 'UPDATE_USER', payload: response.data });
+
       alert('Profile updated successfully');
     } catch (error) {
       console.error(error);
@@ -66,6 +76,7 @@ const Profile = () => {
             <label className="block mb-2 text-sm font-bold text-gray-700">Password</label>
             <input
               type="password"
+              placeholder="Enter new password if you want to change it"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-200"
