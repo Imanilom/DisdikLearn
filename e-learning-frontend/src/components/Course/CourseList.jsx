@@ -44,6 +44,13 @@ const CourseList = () => {
         }
       );
       alert('Successfully enrolled in the course');
+      // Optionally, refresh the course list or the user's enrollment status
+      const updatedCourses = courses.map(course => 
+        course._id === courseId 
+          ? { ...course, enrolledStudents: [...course.enrolledStudents, user._id] } 
+          : course
+      );
+      setCourses(updatedCourses);
     } catch (err) {
       console.error(err);
       alert('Failed to enroll in the course');
@@ -77,7 +84,7 @@ const CourseList = () => {
                     Edit Course
                   </button>
                 )}
-                {user.role === 'student' && (
+                {user.role === 'student' && !course.enrolledStudents.includes(user._id) && (
                   <button
                     className="bg-yellow-500 text-white px-3 py-1 rounded-md"
                     onClick={() => handleEnroll(course._id)}

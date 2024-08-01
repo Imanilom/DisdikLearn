@@ -16,38 +16,42 @@ import LessonList from './components/Lessons/LessonList';
 import LessonDetails from './components/Lessons/LessonDetails'; 
 import CreateLesson from './components/Lessons/CreateLesson';   
 import EditLesson from './components/Lessons/EditLesson';       
-import QuizList from './components/Quiz/QuizList';               // Import new components
-import QuizDetails from './components/Quiz/QuizDetails';       // Import new components
-import CreateQuiz from './components/Quiz/CreateQuiz';         // Import new components
-import EditQuiz from './components/Quiz/EditQuiz';             // Import new components
+import QuizList from './components/Quiz/QuizList';               
+import QuizDetails from './components/Quiz/QuizDetails';       
+import CreateQuiz from './components/Quiz/CreateQuiz';         
+import EditQuiz from './components/Quiz/EditQuiz';             
 
 const AppRoutes = () => {
   return (
     <Router>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route element={<PrivateRoute roles={['student', 'instructor', 'admin']} />}>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/courses" element={<CourseList />} /> {/* List all courses */}
-          <Route path="/courses/:id" element={<CourseDetails />} /> {/* Course details */}
+      <div className="container mx-auto px-4"> {/* Container with left and right padding */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route element={<PrivateRoute roles={['student', 'instructor', 'admin']} />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/courses" element={<CourseList />} /> {/* List all courses */}
+            <Route path="/courses/:id" element={<CourseDetails />} /> {/* Course details */}
+            <Route path="/courses/:courseId/lessons" element={<LessonList />} /> {/* List lessons */}
+            <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetails />} /> {/* Lesson details */}
+            <Route path="/courses/:courseId/quizzes" element={<QuizList />} /> {/* List quizzes */}
+            <Route path="/courses/:courseId/quizzes/:quizId" element={<QuizDetails />} /> {/* Quiz details */}
+          </Route>
+          <Route element={<PrivateRoute roles={['admin']} />}>
+            <Route path="/users" element={<UserList />} /> {/* Admin user list */}
+          </Route>
+          <Route element={<PrivateRoute roles={['instructor']} />}>
           <Route path="/courses/:id/edit" element={<EditCourse />} /> {/* Edit course */}
-          <Route path="/courses/:courseId/lessons" element={<LessonList />} /> {/* List lessons */}
-          <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetails />} /> {/* Lesson details */}
+          <Route path="/courses/:courseId/quizzes/create" element={<CreateQuiz />} /> {/* Create new quiz */}
           <Route path="/courses/:courseId/lessons/create" element={<CreateLesson />} /> {/* Create new lesson */}
           <Route path="/courses/:courseId/lessons/:lessonId/edit" element={<EditLesson />} /> {/* Edit lesson */}
-          <Route path="/courses/:courseId/quizzes" element={<QuizList />} /> {/* List quizzes */}
-          <Route path="/courses/:courseId/quizzes/create" element={<CreateQuiz />} /> {/* Create new quiz */}
-          <Route path="/courses/:courseId/quizzes/:quizId" element={<QuizDetails />} /> {/* Quiz details */}
           <Route path="/courses/:courseId/quizzes/:quizId/edit" element={<EditQuiz />} /> {/* Edit quiz */}
-        </Route>
-        <Route element={<PrivateRoute roles={['admin']} />}>
-          <Route path="/users" element={<UserList />} /> {/* Admin user list */}
-        </Route>
-      </Routes>
+          </Route>
+        </Routes>
+      </div>
     </Router>
   );
 };

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const QuizList = () => {
   const { courseId } = useParams();
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
 
@@ -29,6 +30,13 @@ const QuizList = () => {
     fetchQuizzes();
   }, [courseId, token]);
 
+  const handleQuizClick = (quizId) => {
+    const confirmMessage = "Do you want to start this quiz now? Click 'OK' to proceed or 'Cancel' to go back.";
+    if (window.confirm(confirmMessage)) {
+      navigate(`/courses/${courseId}/quizzes/${quizId}`);
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -46,9 +54,12 @@ const QuizList = () => {
         {quizzes.length > 0 ? (
           quizzes.map((quiz) => (
             <li key={quiz._id}>
-              <Link to={`/courses/${courseId}/quizzes/${quiz._id}`}>
+              <button
+                className="text-blue-500 underline"
+                onClick={() => handleQuizClick(quiz._id)}
+              >
                 {quiz.title}
-              </Link>
+              </button>
             </li>
           ))
         ) : (

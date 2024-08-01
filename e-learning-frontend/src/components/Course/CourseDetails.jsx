@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const CourseDetails = () => {
   const { id } = useParams(); // Get the course ID from the URL
@@ -11,6 +12,8 @@ const CourseDetails = () => {
   const [error, setError] = useState(null);
 
   const token = localStorage.getItem('token');
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -54,6 +57,13 @@ const CourseDetails = () => {
     fetchCourseDetails();
   }, [id, token]);
 
+  const handleQuizClick = (quizId) => {
+    const confirmMessage = "Do you want to start this quiz now? Click 'OK' to proceed or 'Cancel' to go back.";
+    if (window.confirm(confirmMessage)) {
+      navigate(`/courses/${id}/quizzes/${quizId}`);
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -79,13 +89,15 @@ const CourseDetails = () => {
 
       <div className="mt-4">
         <h3 className="text-xl font-semibold">Lessons</h3>
-        <div className="mb-4">
-          <Link to={`/courses/${id}/lessons/create`}>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-              Add New Lesson
-            </button>
-          </Link>
-        </div>
+        {user.role === 'instructor' && (
+          <div className="mb-4">
+            <Link to={`/courses/${id}/lessons/create`}>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                Add New Lesson
+              </button>
+            </Link>
+          </div>
+        )}
         <ul className="list-disc pl-5">
           {lessons.length > 0 ? (
             lessons.map((lesson) => (
@@ -103,20 +115,25 @@ const CourseDetails = () => {
 
       <div className="mt-4">
         <h3 className="text-xl font-semibold">Quizzes</h3>
-        <div className="mb-4">
-          <Link to={`/courses/${id}/quizzes/create`}>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-              Add New Quiz
-            </button>
-          </Link>
-        </div>
+        {user.role === 'instructor' && (
+          <div className="mb-4">
+            <Link to={`/courses/${id}/quizzes/create`}>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                Add New Quiz
+              </button>
+            </Link>
+          </div>
+        )}
         <ul className="list-disc pl-5">
           {quizzes.length > 0 ? (
             quizzes.map((quiz) => (
               <li key={quiz._id}>
-                <Link to={`/courses/${id}/quizzes/${quiz._id}`}>
+                <button
+                  className="text-blue-500 underline"
+                  onClick={() => handleQuizClick(quiz._id)}
+                >
                   {quiz.title || 'No title available'}
-                </Link>
+                </button>
               </li>
             ))
           ) : (
