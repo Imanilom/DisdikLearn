@@ -1,4 +1,3 @@
-// components/Course/CourseList.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -33,6 +32,24 @@ const CourseList = () => {
     fetchCourses();
   }, [token]);
 
+  const handleEnroll = async (courseId) => {
+    try {
+      await axios.post(
+        `http://localhost:3000/api/courses/${courseId}/enroll`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert('Successfully enrolled in the course');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to enroll in the course');
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -58,6 +75,14 @@ const CourseList = () => {
                     onClick={() => navigate(`/courses/${course._id}/edit`)}
                   >
                     Edit Course
+                  </button>
+                )}
+                {user.role === 'student' && (
+                  <button
+                    className="bg-yellow-500 text-white px-3 py-1 rounded-md"
+                    onClick={() => handleEnroll(course._id)}
+                  >
+                    Enroll
                   </button>
                 )}
               </div>
