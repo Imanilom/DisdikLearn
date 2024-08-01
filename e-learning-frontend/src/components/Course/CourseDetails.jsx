@@ -64,6 +64,13 @@ const CourseDetails = () => {
     }
   };
 
+  const getUserLastAttempt = (quiz) => {
+    if (!user || !quiz.attempts) return null;
+    const userAttempts = quiz.attempts.filter(attempt => attempt.student === user._id);
+    if (userAttempts.length === 0) return null;
+    return userAttempts[userAttempts.length - 1].score; // Assuming last entry is the latest
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -134,6 +141,9 @@ const CourseDetails = () => {
                 >
                   {quiz.title || 'No title available'}
                 </button>
+                {getUserLastAttempt(quiz) !== null && (
+                  <span className="ml-2 text-gray-600">(Last score: {getUserLastAttempt(quiz)})</span>
+                )}
               </li>
             ))
           ) : (

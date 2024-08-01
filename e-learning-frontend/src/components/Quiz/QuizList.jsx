@@ -1,33 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const QuizList = () => {
   const { courseId } = useParams();
   const [quizzes, setQuizzes] = useState([]);
+  const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    const fetchQuizzes = async () => {
+    const fetchQuizzesAndCourse = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses/${courseId}/quizzes`, {
+        // Fetch quizzes
+        const quizResponse = await axios.get(`http://localhost:3000/api/courses/${courseId}/quizzes`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setQuizzes(response.data);
+        setQuizzes(quizResponse.data);
+
+        // Fetch course details
+        const courseResponse = await axios.get(`http://localhost:3000/api/courses/${courseId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setCourse(courseResponse.data);
       } catch (err) {
-        setError(err.message || 'Failed to fetch quizzes');
+        setError(err.message || 'Failed to fetch quizzes or course details');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchQuizzes();
+    fetchQuizzesAndCourse();
   }, [courseId, token]);
 
   const handleQuizClick = (quizId) => {
@@ -37,18 +49,27 @@ const QuizList = () => {
     }
   };
 
+  const getUserLastAttempt = (quiz) => {
+    if (!user || !quiz.attempts) return null;
+    const userAttempts = quiz.attempts.filter(attempt => attempt.student === user._id);
+    if (userAttempts.length === 0) return null;
+    return userAttempts[userAttempts.length - 1].score; // Assuming last entry is the latest
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="mt-4 p-4 border rounded shadow-sm">
-      <h2 className="text-2xl font-bold mb-2">Quizzes</h2>
+      <h2 className="text-2xl font-bold mb-2">Quizzes for {course?.title}</h2>
       <div className="mb-4">
-        <Link to={`/courses/${courseId}/quizzes/create`}>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-            Add New Quiz
-          </button>
-        </Link>
+        {user.role === 'instructor' && (
+          <Link to={`/courses/${courseId}/quizzes/create`}>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+              Add New Quiz
+            </button>
+          </Link>
+        )}
       </div>
       <ul className="list-disc pl-5">
         {quizzes.length > 0 ? (
@@ -60,6 +81,9 @@ const QuizList = () => {
               >
                 {quiz.title}
               </button>
+              {getUserLastAttempt(quiz) !== null && (
+                <span className="ml-2 text-gray-600">(Last score: {getUserLastAttempt(quiz)})</span>
+              )}
             </li>
           ))
         ) : (

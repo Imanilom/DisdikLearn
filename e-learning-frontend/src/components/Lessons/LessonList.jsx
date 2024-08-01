@@ -42,7 +42,7 @@ const LessonList = () => {
             <li key={lesson._id} className="border p-2 mb-2">
               <p><strong>Title:</strong> {lesson.title}</p>
               <p><strong>Content:</strong> {lesson.content}</p>
-              <a href={`/courses/${id}/lessons/${lesson._id}`} className="text-blue-500 hover:underline">View Details</a>
+              <a href={`/courses/${courseId}/lessons/${lesson._id}`} className="text-blue-500 hover:underline">View Details</a>
             </li>
           ))}
         </ul>
