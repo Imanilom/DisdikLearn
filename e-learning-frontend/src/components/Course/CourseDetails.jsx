@@ -6,6 +6,7 @@ const CourseDetails = () => {
   const { id } = useParams(); // Get the course ID from the URL
   const [course, setCourse] = useState(null);
   const [lessons, setLessons] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -15,15 +16,15 @@ const CourseDetails = () => {
     const fetchCourseDetails = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/api/courses/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setCourse(response.data);
 
         // Fetch lesson details
-        if (response.data.lessons.length > 0) {
+        if (response.data.lessons && response.data.lessons.length > 0) {
           const lessonRequests = response.data.lessons.map((lessonId) =>
             axios.get(`http://localhost:3000/api/courses/${id}/lessons/${lessonId}`, {
               headers: {
@@ -34,6 +35,15 @@ const CourseDetails = () => {
           const lessonsResponses = await Promise.all(lessonRequests);
           setLessons(lessonsResponses.map(res => res.data));
         }
+
+        // Fetch quizzes
+        const quizzesResponse = await axios.get(`http://localhost:3000/api/courses/${id}/quizzes`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setQuizzes(quizzesResponse.data);
+
       } catch (err) {
         setError(err.message || 'Failed to fetch course details');
       } finally {
@@ -93,10 +103,21 @@ const CourseDetails = () => {
 
       <div className="mt-4">
         <h3 className="text-xl font-semibold">Quizzes</h3>
+        <div className="mb-4">
+          <Link to={`/courses/${id}/quizzes/create`}>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+              Add New Quiz
+            </button>
+          </Link>
+        </div>
         <ul className="list-disc pl-5">
-          {course.quizzes.length > 0 ? (
-            course.quizzes.map((quiz) => (
-              <li key={quiz._id}>{quiz.title}</li>
+          {quizzes.length > 0 ? (
+            quizzes.map((quiz) => (
+              <li key={quiz._id}>
+                <Link to={`/courses/${id}/quizzes/${quiz._id}`}>
+                  {quiz.title || 'No title available'}
+                </Link>
+              </li>
             ))
           ) : (
             <p>No quizzes available.</p>

@@ -15,7 +15,7 @@ const CreateCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/api/courses/', { title, description }, {
+      await axios.post('/api/courses', { title, description }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

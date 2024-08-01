@@ -6,11 +6,20 @@ const createQuiz = async (req, res) => {
 
   try {
     await quiz.save();
+
+    // Add the quiz ID to the corresponding course
+    await Course.findByIdAndUpdate(
+      req.params.courseId,
+      { $push: { quizzes: quiz._id } },
+      { new: true, useFindAndModify: false }
+    );
+
     res.status(201).send(quiz);
   } catch (error) {
     res.status(400).send(error);
   }
 };
+
 
 const getQuizzesByCourse = async (req, res) => {
   try {
@@ -18,6 +27,19 @@ const getQuizzesByCourse = async (req, res) => {
     res.send(quizzes);
   } catch (error) {
     res.status(500).send();
+  }
+};
+
+
+const getQuizById = async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.quizId);
+    if (!quiz) {
+      return res.status(404).send({ error: "Quiz not found" });
+    }
+    res.send(quiz);
+  } catch (error) {
+    res.status(500).send({ error: "Error fetching quiz" });
   }
 };
 
@@ -61,4 +83,5 @@ module.exports = {
   createQuiz,
   getQuizzesByCourse,
   attemptQuiz,
+  getQuizById,
 };
