@@ -28,7 +28,7 @@ const getCourseById = async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const course = await Course.findOne({ _id });
+    const course = await Course.findOne({ _id }).populate('createdBy', 'name');
 
     if (!course) {
       return res.status(404).send({ error: "Course not found." });

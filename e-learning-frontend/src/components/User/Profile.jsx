@@ -50,7 +50,7 @@ const Profile = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-200"
             />
           </div>
           <div className="mb-4">
@@ -59,7 +59,7 @@ const Profile = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-200"
             />
           </div>
           <div className="mb-4">
@@ -68,7 +68,7 @@ const Profile = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-200"
             />
           </div>
           <div className="mb-6">
@@ -82,7 +82,7 @@ const Profile = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600"
+            className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600"
           >
             Update Profile
           </button>
