@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import CourseList from '../components/Course/CourseList';
 import CreateCourse from '../components/Course/CreateCourse';
+
 const Dashboard = () => {
   const user = useSelector((state) => state.auth.user);
   const [courses, setCourses] = useState([]);
@@ -53,7 +54,7 @@ const Dashboard = () => {
         <div>
           <h2 className="text-2xl font-bold mb-4">Manage Courses</h2>
           <CreateCourse />
-          <CourseList courses={courses} onEnroll={handleEnroll} />
+    
         </div>
       ) : (
         <div>

@@ -39,6 +39,7 @@ const AppRoutes = () => {
             <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetails />} /> {/* Lesson details */}
             <Route path="/courses/:courseId/quizzes" element={<QuizList />} /> {/* List quizzes */}
             <Route path="/courses/:courseId/quizzes/:quizId" element={<QuizDetails />} /> {/* Quiz details */}
+
           </Route>
           <Route element={<PrivateRoute roles={['admin']} />}>
             <Route path="/users" element={<UserList />} /> {/* Admin user list */}

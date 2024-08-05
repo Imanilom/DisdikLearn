@@ -61,7 +61,7 @@ exports.getProgressByCourse = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const course = await Course.findById(courseId);
+    const course = await Course.findById(courseId).populate('lessons');
     if (!course) {
       return res.status(404).json({ error: "Course not found" });
     }
@@ -77,7 +77,20 @@ exports.getProgressByCourse = async (req, res) => {
         .json({ error: "Progress not found for the course" });
     }
 
-    res.status(200).json(progress);
+    // Calculate progress percentage
+    const totalLessons = course.lessons.length;
+    const completedLessons = progress.completedLessons.length;
+    const percentageCompleted = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
+
+    res.status(200).json({
+      course: {
+        ...course.toObject(),
+        completedLessons: progress.completedLessons,
+        percentageCompleted,
+        totalLessons,
+        completedLessons,
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
