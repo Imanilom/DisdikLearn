@@ -43,7 +43,7 @@ const getCourseById = async (req, res) => {
 // Update course
 const updateCourse = async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["title", "description"];
+  const allowedUpdates = ["title", "description", "image"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );

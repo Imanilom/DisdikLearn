@@ -45,7 +45,7 @@ const getProfile = async (req, res) => {
 // Update the user's profile
 const updateProfile = async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["name", "email", "password", "role"];
+  const allowedUpdates = ["name", "email", "password", "role", "profilePicture"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
