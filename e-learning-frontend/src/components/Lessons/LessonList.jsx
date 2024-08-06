@@ -34,7 +34,7 @@ const LessonList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="mt-4">
+    <div className="container mx-auto mt-4">
       <h2 className="text-2xl font-bold mb-4">Lessons</h2>
       {lessons.length > 0 ? (
         <ul>

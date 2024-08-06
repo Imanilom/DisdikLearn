@@ -68,7 +68,7 @@ const CourseList = () => {
           {courses.map((course) => (
             <div key={course._id} className="bg-white border rounded-lg shadow-md overflow-hidden">
               <img
-                src={image} // Replace with the path to your default image
+                src={course.image} // Replace with the path to your default image
                 alt={course.title}
                 className="w-full h-40 object-cover"
               />

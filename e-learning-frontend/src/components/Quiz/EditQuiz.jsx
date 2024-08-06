@@ -14,7 +14,7 @@ const EditQuiz = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/quizzes/${quizId}`, {
+        const response = await axios.get(`http://localhost:3000/api/courses/${courseId}/quizzes/${quizId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -28,7 +28,7 @@ const EditQuiz = () => {
     };
 
     fetchQuiz();
-  }, [quizId, token]);
+  }, [courseId, quizId, token]);
 
   const handleQuestionChange = (index, e) => {
     const { name, value } = e.target;
@@ -67,7 +67,7 @@ const EditQuiz = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`http://localhost:3000/api/quizzes/${quizId}`, quiz, {
+      await axios.put(`http://localhost:3000/api/courses/${courseId}/quizzes/${quizId}`, quiz, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -84,14 +84,14 @@ const EditQuiz = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="mt-4 p-4 border rounded shadow-sm">
+    <div className="container mx-auto mt-4 p-4 border rounded shadow-sm">
       <h2 className="text-2xl font-bold mb-2">Edit Quiz</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700">Title</label>
           <input
             type="text"
-            value={quiz.title}
+            value={quiz.title || ''}
             onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
             className="border rounded px-3 py-2 w-full"
             required
@@ -103,7 +103,7 @@ const EditQuiz = () => {
             <input
               type="text"
               name="question"
-              value={question.question}
+              value={question.question || ''}
               onChange={(e) => handleQuestionChange(qIndex, e)}
               className="border rounded px-3 py-2 w-full"
               required
@@ -112,7 +112,7 @@ const EditQuiz = () => {
               <div key={oIndex} className="mt-2 flex items-center">
                 <input
                   type="text"
-                  value={option.option}
+                  value={option.option || ''}
                   onChange={(e) => handleOptionChange(qIndex, oIndex, e)}
                   className="border rounded px-3 py-2 w-full"
                   required
@@ -129,7 +129,7 @@ const EditQuiz = () => {
             <button
               type="button"
               onClick={() => handleAddOption(qIndex)}
-              className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300"
+              className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 mt-2"
             >
               Add Option
             </button>
@@ -138,7 +138,7 @@ const EditQuiz = () => {
         <button
           type="button"
           onClick={handleAddQuestion}
-          className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300"
+          className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 mt-4"
         >
           Add Question
         </button>

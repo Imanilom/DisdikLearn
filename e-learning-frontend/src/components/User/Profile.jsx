@@ -1,28 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import LogoutButton from '../Auth/LogoutButton';
 import axios from 'axios';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
+import { app } from '../../firebase'; // Adjust the path if needed
+import LogoutButton from '../Auth/LogoutButton';
 
 const Profile = () => {
-  // Access user information from the Redux state
   const user = useSelector((state) => state.auth.user);
   const token = localStorage.getItem('token');
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState('');
-  const [role] = useState(user?.role || ''); // Role usually shouldn't be editable by the user
-
+  const [profilePicture, setProfilePicture] = useState(user?.profilePicture || '');
+  const [imagePercent, setImagePercent] = useState(0);
+  const [imageError, setImageError] = useState(false);
+  const fileRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleFileUpload = async (image) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + image.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, image);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImagePercent(Math.round(progress));
+      },
+      (error) => {
+        setImageError(true);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setProfilePicture(downloadURL);
+        });
+      }
+    );
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+  };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      // Prepare the data for update
-      const updateData = { name, email };
+      const updateData = { name, email, profilePicture };
       if (password) {
-        updateData.password = password; // Include password only if it's changed
+        updateData.password = password;
       }
 
       const response = await axios.patch(
@@ -35,9 +72,7 @@ const Profile = () => {
         }
       );
 
-      // Optionally, update Redux state with new user data
       dispatch({ type: 'UPDATE_USER', payload: response.data });
-
       alert('Profile updated successfully');
     } catch (error) {
       console.error(error);
@@ -50,11 +85,39 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
+    <div className="flex justify-center items-center min-h-screen bg-white-100">
       <div className="w-full max-w-md bg-white p-8 rounded-md shadow-md">
         <h1 className="text-3xl font-bold mb-6 text-center">Your Profile</h1>
-        <form onSubmit={handleUpdate}>
-          <div className="mb-4">
+        <form onSubmit={handleUpdate} className="flex flex-col items-center gap-4">
+          <input
+            type="file"
+            ref={fileRef}
+            hidden
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          <div className="flex flex-col items-center mb-4">
+            <img
+              src={profilePicture || user.profilePicture || '/default-profile.png'}
+              alt="Profile"
+              className="h-32 w-32 cursor-pointer rounded-full object-cover"
+              onClick={() => fileRef.current.click()}
+            />
+            <p className="text-sm mt-2">
+              {imageError ? (
+                <span className="text-red-700">
+                  Error uploading image (file size must be less than 2 MB)
+                </span>
+              ) : imagePercent > 0 && imagePercent < 100 ? (
+                <span className="text-slate-700">{`Uploading: ${imagePercent} %`}</span>
+              ) : imagePercent === 100 ? (
+                <span className="text-green-700">Image uploaded successfully</span>
+              ) : (
+                ''
+              )}
+            </p>
+          </div>
+          <div className="mb-4 w-full">
             <label className="block mb-2 text-sm font-bold text-gray-700">Name</label>
             <input
               type="text"
@@ -63,7 +126,7 @@ const Profile = () => {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-200"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 w-full">
             <label className="block mb-2 text-sm font-bold text-gray-700">Email</label>
             <input
               type="email"
@@ -72,7 +135,7 @@ const Profile = () => {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-200"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 w-full">
             <label className="block mb-2 text-sm font-bold text-gray-700">Password</label>
             <input
               type="password"
@@ -80,15 +143,6 @@ const Profile = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-200"
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block mb-2 text-sm font-bold text-gray-700">Role</label>
-            <input
-              type="text"
-              value={role}
-              readOnly
-              className="w-full px-3 py-2 border rounded-md bg-gray-200 text-gray-500"
             />
           </div>
           <button

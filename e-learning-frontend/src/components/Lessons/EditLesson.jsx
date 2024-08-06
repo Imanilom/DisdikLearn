@@ -48,7 +48,7 @@ const EditLesson = () => {
   };
 
   return (
-    <div className="mt-4">
+    <div className="container mx-auto mt-4">
       <h2 className="text-2xl font-bold mb-4">Edit Lesson</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

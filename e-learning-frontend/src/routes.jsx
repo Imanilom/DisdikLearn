@@ -25,7 +25,7 @@ const AppRoutes = () => {
   return (
     <Router>
       <Header />
-      <div className="container mx-auto px-4"> {/* Container with left and right padding */}
+      <div className=""> {/* Container with left and right padding */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

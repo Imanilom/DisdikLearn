@@ -80,7 +80,7 @@ const CourseDetails = () => {
         <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="mb-4">
             <img
-              src={course.imageUrl || 'https://via.placeholder.com/1200x400'}
+              src={course.image || 'https://via.placeholder.com/1200x400'}
               alt={course.title}
               className="w-full h-60 object-cover rounded-lg"
             />
@@ -105,9 +105,10 @@ const CourseDetails = () => {
             </ul>
           </div>
 
-          <div className="mt-6">
-            <h3 className="text-2xl font-semibold mb-3">Lessons</h3>
-            {user.role === 'instructor' && (
+          {/* Display Lesson Management based on Role */}
+          {user.role === 'instructor' && (
+            <div className="mt-6">
+              <h3 className="text-2xl font-semibold mb-3">Lessons</h3>
               <div className="mb-4">
                 <Link to={`/courses/${id}/lessons/create`}>
                   <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
@@ -115,27 +116,28 @@ const CourseDetails = () => {
                   </button>
                 </Link>
               </div>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {lessons.length > 0 ? (
-                lessons.map((lesson) => (
-                  <div key={lesson._id} className="bg-white shadow-md rounded-lg overflow-hidden">
-                    <img
-                      src={lesson.imageUrl || 'https://via.placeholder.com/400x200'}
-                      alt={lesson.title}
-                      className="w-full h-40 object-cover"
-                    />
-                    <div className="p-4">
-                      <h4 className="text-xl font-semibold mb-2">{lesson.title || 'No title available'}</h4>
-                      <Link to={`/courses/${id}/lessons/${lesson._id}`} className="text-blue-500 hover:underline">View Lesson</Link>
+              {/* Display only if the user is an instructor */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {lessons.length > 0 ? (
+                  lessons.map((lesson) => (
+                    <div key={lesson._id} className="bg-white shadow-md rounded-lg overflow-hidden">
+                      <img
+                        src={lesson.imageUrl || 'https://via.placeholder.com/400x200'}
+                        alt={lesson.title}
+                        className="w-full h-40 object-cover"
+                      />
+                      <div className="p-4">
+                        <h4 className="text-xl font-semibold mb-2">{lesson.title || 'No title available'}</h4>
+                        <Link to={`/courses/${id}/lessons/${lesson._id}/edit`} className="text-blue-500 hover:underline">Edit Lesson</Link>
+                      </div>
                     </div>
-                  </div>
-                ))
-              ) : (
-                <p>No lessons available.</p>
-              )}
+                  ))
+                ) : (
+                  <p>No lessons available.</p>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="mt-6">
             <h3 className="text-2xl font-semibold mb-3">Quizzes</h3>
@@ -165,6 +167,11 @@ const CourseDetails = () => {
                       >
                         Start Quiz
                       </button>
+                      {user.role === 'instructor' && (
+                        <Link to={`/courses/${id}/quizzes/${quiz._id}/edit`} className="ml-4 text-blue-500 hover:underline">
+                          Edit Quiz
+                        </Link>
+                      )}
                       {getUserLastAttempt(quiz) !== null && (
                         <span className="ml-2 text-gray-600">(Last score: {getUserLastAttempt(quiz)})</span>
                       )}

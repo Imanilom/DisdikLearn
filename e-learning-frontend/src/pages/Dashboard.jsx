@@ -54,7 +54,7 @@ const Dashboard = () => {
         <div>
           <h2 className="text-2xl font-bold mb-4">Manage Courses</h2>
           <CreateCourse />
-    
+          <CourseList courses={courses} onEnroll={handleEnroll} />
         </div>
       ) : (
         <div>
