@@ -25,7 +25,7 @@ const AppRoutes = () => {
   return (
     <Router>
       <Header />
-      <div className="container mx-auto px-4"> {/* Container with left and right padding */}
+      <div className=""> {/* Container with left and right padding */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -39,6 +39,7 @@ const AppRoutes = () => {
             <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetails />} /> {/* Lesson details */}
             <Route path="/courses/:courseId/quizzes" element={<QuizList />} /> {/* List quizzes */}
             <Route path="/courses/:courseId/quizzes/:quizId" element={<QuizDetails />} /> {/* Quiz details */}
+
           </Route>
           <Route element={<PrivateRoute roles={['admin']} />}>
             <Route path="/users" element={<UserList />} /> {/* Admin user list */}

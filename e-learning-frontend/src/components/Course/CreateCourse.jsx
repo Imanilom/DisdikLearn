@@ -1,21 +1,64 @@
-// components/Course/CreateCourse.js
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
+import { app } from '../../firebase'; // Adjust the path if needed
 
 const CreateCourse = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [imagePercent, setImagePercent] = useState(0);
+  const [imageError, setImageError] = useState(false);
+  const fileRef = useRef(null);
 
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const token = localStorage.getItem('token');
+
+  const handleFileUpload = async (image) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + image.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, image);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImagePercent(Math.round(progress));
+      },
+      (error) => {
+        setImageError(true);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageUrl(downloadURL);
+        });
+      }
+    );
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      handleFileUpload(file);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/courses', { title, description }, {
+      const courseData = { title, description, image: imageUrl };
+      await axios.post('http://localhost:3000/api/courses', courseData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,6 +91,34 @@ const CreateCourse = () => {
             className="w-full p-2 border rounded"
             required
           />
+        </div>
+        <div className="mb-4 flex flex-col items-center">
+          <input
+            type="file"
+            ref={fileRef}
+            hidden
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          <img
+            src={imageUrl || 'https://via.placeholder.com/1200x400'}
+            alt="Course"
+            className="h-full w-full cursor-pointer rounded object-cover"
+            onClick={() => fileRef.current.click()}
+          />
+          <p className="text-sm mt-2">
+            {imageError ? (
+              <span className="text-red-700">
+                Error uploading image (file size must be less than 2 MB)
+              </span>
+            ) : imagePercent > 0 && imagePercent < 100 ? (
+              <span className="text-slate-700">{`Uploading: ${imagePercent}%`}</span>
+            ) : imagePercent === 100 ? (
+              <span className="text-green-700">Image uploaded successfully</span>
+            ) : (
+              ''
+            )}
+          </p>
         </div>
         <button type="submit" className="bg-green-700 text-white px-4 py-2 rounded">
           Create

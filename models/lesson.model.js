@@ -16,6 +16,11 @@ const lessonSchema = new mongoose.Schema({
     ref: "Course",
     required: true,
   },
+  picture: {
+    type: String,
+    default:
+      'https://via.placeholder.com/1200x400',
+  },
 });
 
 module.exports = mongoose.model("Lesson", lessonSchema);

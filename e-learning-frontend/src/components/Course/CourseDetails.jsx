@@ -75,82 +75,118 @@ const CourseDetails = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="mt-4 p-4 border rounded shadow-sm">
-      <h2 className="text-2xl font-bold mb-2">{course.title}</h2>
-      <p className="text-gray-700 mb-4">{course.description}</p>
-      <p><strong>Created by:</strong> {course.createdBy ? course.createdBy.name : 'Unknown'}</p>
-      <p><strong>Enrolled Students:</strong> {course.enrolledStudents.length}</p>
-
-      <div className="mt-4">
-        <h3 className="text-xl font-semibold">Materials</h3>
-        <ul className="list-disc pl-5">
-          {course.materials.length > 0 ? (
-            course.materials.map((material, index) => (
-              <li key={index}><a href={`/${material}`} target="_blank" rel="noopener noreferrer">{material}</a></li>
-            ))
-          ) : (
-            <p>No materials available.</p>
-          )}
-        </ul>
-      </div>
-
-      <div className="mt-4">
-        <h3 className="text-xl font-semibold">Lessons</h3>
-        {user.role === 'instructor' && (
+    <div className="container mx-auto p-4">
+      {course ? (
+        <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="mb-4">
-            <Link to={`/courses/${id}/lessons/create`}>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                Add New Lesson
-              </button>
-            </Link>
+            <img
+              src={course.image || 'https://via.placeholder.com/1200x400'}
+              alt={course.title}
+              className="w-full h-60 object-cover rounded-lg"
+            />
           </div>
-        )}
-        <ul className="list-disc pl-5">
-          {lessons.length > 0 ? (
-            lessons.map((lesson) => (
-              <li key={lesson._id}>
-                <Link to={`/courses/${id}/lessons/${lesson._id}`}>
-                  {lesson.title || 'No title available'}
+          <h2 className="text-3xl font-bold mb-2">{course.title}</h2>
+          <p className="text-gray-800 mb-4">{course.description}</p>
+          <p className="text-lg font-semibold"><strong>Created by:</strong> {course.createdBy ? course.createdBy.name : 'Unknown'}</p>
+          <p className="text-lg font-semibold"><strong>Enrolled Students:</strong> {course.enrolledStudents.length}</p>
+
+          <div className="mt-6">
+            <h3 className="text-2xl font-semibold mb-3">Materials</h3>
+            <ul className="list-disc pl-5">
+              {course.materials.length > 0 ? (
+                course.materials.map((material, index) => (
+                  <li key={index} className="mb-1">
+                    <a href={`/${material}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{material}</a>
+                  </li>
+                ))
+              ) : (
+                <p>No materials available.</p>
+              )}
+            </ul>
+          </div>
+
+          {/* Display Lesson Management based on Role */}
+          {user.role === 'instructor' && (
+            <div className="mt-6">
+              <h3 className="text-2xl font-semibold mb-3">Lessons</h3>
+              <div className="mb-4">
+                <Link to={`/courses/${id}/lessons/create`}>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    Add New Lesson
+                  </button>
                 </Link>
-              </li>
-            ))
-          ) : (
-            <p>No lessons available.</p>
-          )}
-        </ul>
-      </div>
-
-      <div className="mt-4">
-        <h3 className="text-xl font-semibold">Quizzes</h3>
-        {user.role === 'instructor' && (
-          <div className="mb-4">
-            <Link to={`/courses/${id}/quizzes/create`}>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                Add New Quiz
-              </button>
-            </Link>
-          </div>
-        )}
-        <ul className="list-disc pl-5">
-          {quizzes.length > 0 ? (
-            quizzes.map((quiz) => (
-              <li key={quiz._id}>
-                <button
-                  className="text-blue-500 underline"
-                  onClick={() => handleQuizClick(quiz._id)}
-                >
-                  {quiz.title || 'No title available'}
-                </button>
-                {getUserLastAttempt(quiz) !== null && (
-                  <span className="ml-2 text-gray-600">(Last score: {getUserLastAttempt(quiz)})</span>
+              </div>
+              {/* Display only if the user is an instructor */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {lessons.length > 0 ? (
+                  lessons.map((lesson) => (
+                    <div key={lesson._id} className="bg-white shadow-md rounded-lg overflow-hidden">
+                      <img
+                        src={lesson.imageUrl || 'https://via.placeholder.com/400x200'}
+                        alt={lesson.title}
+                        className="w-full h-40 object-cover"
+                      />
+                      <div className="p-4">
+                        <h4 className="text-xl font-semibold mb-2">{lesson.title || 'No title available'}</h4>
+                        <Link to={`/courses/${id}/lessons/${lesson._id}/edit`} className="text-blue-500 hover:underline">Edit Lesson</Link>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No lessons available.</p>
                 )}
-              </li>
-            ))
-          ) : (
-            <p>No quizzes available.</p>
+              </div>
+            </div>
           )}
-        </ul>
-      </div>
+
+          <div className="mt-6">
+            <h3 className="text-2xl font-semibold mb-3">Quizzes</h3>
+            {user.role === 'instructor' && (
+              <div className="mb-4">
+                <Link to={`/courses/${id}/quizzes/create`}>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    Add New Quiz
+                  </button>
+                </Link>
+              </div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {quizzes.length > 0 ? (
+                quizzes.map((quiz) => (
+                  <div key={quiz._id} className="bg-white shadow-md rounded-lg overflow-hidden">
+                    <img
+                      src={quiz.imageUrl || 'https://via.placeholder.com/400x200'}
+                      alt={quiz.title}
+                      className="w-full h-40 object-cover"
+                    />
+                    <div className="p-4">
+                      <h4 className="text-xl font-semibold mb-2">{quiz.title || 'No title available'}</h4>
+                      <button
+                        className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                        onClick={() => handleQuizClick(quiz._id)}
+                      >
+                        Start Quiz
+                      </button>
+                      {user.role === 'instructor' && (
+                        <Link to={`/courses/${id}/quizzes/${quiz._id}/edit`} className="ml-4 text-blue-500 hover:underline">
+                          Edit Quiz
+                        </Link>
+                      )}
+                      {getUserLastAttempt(quiz) !== null && (
+                        <span className="ml-2 text-gray-600">(Last score: {getUserLastAttempt(quiz)})</span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No quizzes available.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p>No course details available.</p>
+      )}
     </div>
   );
 };

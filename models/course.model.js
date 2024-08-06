@@ -15,6 +15,11 @@ const courseSchema = new mongoose.Schema({
     minlength: 10,
     maxlength: 500,
   },
+  image: {
+    type: String,
+    default:
+      'https://via.placeholder.com/1200x400',
+  },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   enrolledStudents: [
     {
@@ -39,6 +44,7 @@ const courseSchema = new mongoose.Schema({
       ref: "Lesson",
     },
   ],
+
 });
 
 module.exports = mongoose.model("Course", courseSchema);

@@ -20,6 +20,27 @@ const createQuiz = async (req, res) => {
   }
 };
 
+const updateQuiz = async (req, res) => {
+  try {
+    const { quizId } = req.params;
+    const updates = req.body;
+
+    // Find the quiz by ID and update it with the provided data
+    const quiz = await Quiz.findByIdAndUpdate(quizId, updates, {
+      new: true, // Return the updated document
+      runValidators: true // Ensure validators are applied
+    });
+
+    if (!quiz) {
+      return res.status(404).send({ error: "Quiz not found" });
+    }
+
+    res.send(quiz);
+  } catch (error) {
+    res.status(400).send({ error: "Error updating quiz" });
+  }
+};
+
 
 const getQuizzesByCourse = async (req, res) => {
   try {
@@ -84,4 +105,5 @@ module.exports = {
   getQuizzesByCourse,
   attemptQuiz,
   getQuizById,
+  updateQuiz,
 };

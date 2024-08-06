@@ -29,6 +29,11 @@ const quizSchema = new mongoose.Schema({
       },
     },
   ],
+  picture: {
+    type: String,
+    default:
+      'https://via.placeholder.com/1200x400',
+  },
 });
 
 module.exports = mongoose.model("Quiz", quizSchema);

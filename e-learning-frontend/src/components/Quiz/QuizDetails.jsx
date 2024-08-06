@@ -61,7 +61,7 @@ const QuizDetails = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="mt-4 p-4 border rounded shadow-sm">
+    <div className="container mx-auto mt-4 p-4 border rounded shadow-sm">
       <h2 className="text-2xl font-bold mb-2">{quiz.title}</h2>
       <form onSubmit={handleSubmit}>
         {quiz.questions.map((question, qIndex) => (

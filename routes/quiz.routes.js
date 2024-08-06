@@ -21,6 +21,13 @@ router.get("/courses/:courseId/quizzes", quizController.getQuizzesByCourse);
 // Route to get a specific quiz by its ID
 router.get("/courses/:courseId/quizzes/:quizId", quizController.getQuizById);
 
+// Route to update a specific quiz by its ID
+router.put(
+  "/courses/:courseId/quizzes/:quizId",
+  authorize("instructor"),
+  quizController.updateQuiz
+);
+
 // Route to attempt a quiz, identified by quizId
 router.post(
   "/courses/:courseId/quizzes/:quizId/attempt",

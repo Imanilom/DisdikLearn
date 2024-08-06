@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
+import logo from '../../assets/logo_yayasan.png'; // Import the logo image
 
 const Header = () => {
   const navigate = useNavigate();
@@ -17,8 +18,12 @@ const Header = () => {
   return (
     <header className="bg-gray-700 p-1 text-white shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-xl font-bold cursor-pointer" onClick={() => navigate('/')}>
-          E-learning Platform
+        <div className="cursor-pointer" onClick={() => navigate('/')}>
+          <img
+            src={logo} // Use the imported logo 
+            alt="Platform Logo"
+            className="h-10" // Adjust size as needed
+          />
         </div>
         <nav className="flex space-x-4">
           {user ? (
@@ -35,12 +40,12 @@ const Header = () => {
               >
                 {user.name}
               </button>
-              {/* <button
+              <button
                 className="hover:bg-gray-500 px-3 py-2 rounded-md"
                 onClick={handleLogout}
               >
                 Logout
-              </button> */}
+              </button>
             </>
           ) : (
             <>

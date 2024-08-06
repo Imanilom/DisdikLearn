@@ -63,7 +63,7 @@ const CreateQuiz = () => {
   };
 
   return (
-    <div className="mt-4 p-4 border rounded shadow-sm">
+    <div className="container mx-auto mt-4 p-4 border rounded shadow-sm">
       <h2 className="text-2xl font-bold mb-2">Create New Quiz</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
