@@ -1,4 +1,3 @@
-// components/Lesson/LessonList.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -30,22 +29,31 @@ const LessonList = () => {
     fetchLessons();
   }, [courseId]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p className="text-center">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
   return (
     <div className="container mx-auto mt-4">
       <h2 className="text-2xl font-bold mb-4">Lessons</h2>
       {lessons.length > 0 ? (
-        <ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {lessons.map((lesson) => (
-            <li key={lesson._id} className="border p-2 mb-2">
-              <p><strong>Title:</strong> {lesson.title}</p>
-              <p><strong>Content:</strong> {lesson.content}</p>
-              <a href={`/courses/${courseId}/lessons/${lesson._id}`} className="text-blue-500 hover:underline">View Details</a>
-            </li>
+            <div key={lesson._id} className="border rounded-lg shadow-lg overflow-hidden">
+              <img
+                src={lesson.image || 'https://via.placeholder.com/400x200'}
+                alt={lesson.title}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold mb-2">{lesson.title}</h3>
+                <p className="text-gray-700 mb-4">{lesson.content}</p>
+                <a href={`/courses/${courseId}/lessons/${lesson._id}`} className="text-blue-500 hover:underline">
+                  View Details
+                </a>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         <p>No lessons available.</p>
       )}

@@ -141,7 +141,7 @@ const uploadCourseMaterial = async (req, res) => {
 // Create course lesson
 const createLesson = async (req, res) => {
   const { courseId } = req.params;
-  const { title, content } = req.body;
+  const { title, content, image } = req.body;
 
   try {
     const course = await Course.findById(courseId);
@@ -157,6 +157,7 @@ const createLesson = async (req, res) => {
     const lesson = new Lesson({
       title,
       content,
+      image,
       course: courseId,
     });
 
@@ -193,7 +194,7 @@ const getLesson = async (req, res) => {
 
 const updateLesson = async (req, res) => {
   const { courseId, lessonId } = req.params;
-  const { title, content } = req.body;
+  const { title, content, image} = req.body;
 
   try {
     const course = await Course.findById(courseId);
@@ -207,7 +208,7 @@ const updateLesson = async (req, res) => {
 
     const lesson = await Lesson.findOneAndUpdate(
       { _id: lessonId, course: courseId },
-      { title, content },
+      { title, content, image },
       { new: true, runValidators: true }
     );
 

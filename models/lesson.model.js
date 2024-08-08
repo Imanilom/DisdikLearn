@@ -16,7 +16,7 @@ const lessonSchema = new mongoose.Schema({
     ref: "Course",
     required: true,
   },
-  picture: {
+  image: {
     type: String,
     default:
       'https://via.placeholder.com/1200x400',
