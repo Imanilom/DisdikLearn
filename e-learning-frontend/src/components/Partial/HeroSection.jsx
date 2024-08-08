@@ -12,10 +12,10 @@ const HeroSection = () => {
       <div className="container mx-auto h-full flex items-center px-4 lg:px-0">
         <div className="relative z-10 flex-1 lg:w-1/2">
           <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-            Empower Your Learning Journey
+            YAYASAN PENDIDIKAN
           </h1>
-          <p className="text-lg text-white mb-6">
-            Join us to explore a world of knowledge with our innovative learning solutions. Enhance your skills and achieve your goals with ease.
+          <p className="text-lg text-white mb-9">
+          Yayasan pendidikan adalah organisasi nirlaba yang didirikan dengan tujuan untuk meningkatkan kualitas pendidikan. Yayasan ini biasanya berfokus pada berbagai aspek pendidikan seperti menyediakan beasiswa, mendirikan sekolah, mengadakan pelatihan untuk guru, menyelenggarakan program pendidikan non-formal, dan mengembangkan kurikulum pendidikan.
           </p>
           <button className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600">
             Get Started

@@ -16,7 +16,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gray-700 p-1 text-white shadow-md">
+    <header className="bg-white-700 p-1 text-black shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <div className="cursor-pointer" onClick={() => navigate('/')}>
           <img
@@ -25,7 +25,7 @@ const Header = () => {
             className="h-10" // Adjust size as needed
           />
         </div>
-        <nav className="flex space-x-4">
+        <nav className="flex space-x-4 flex-grow flex justify-center">
           {user ? (
             <>
               <button
