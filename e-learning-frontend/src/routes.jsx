@@ -46,6 +46,8 @@ const AppRoutes = () => {
           </Route>
           <Route element={<PrivateRoute roles={['instructor']} />}>
           <Route path="/courses/:id/edit" element={<EditCourse />} /> {/* Edit course */}
+          <Route path="/courses/:courseId/lessons" element={<LessonList />} /> {/* List lessons */}
+          <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetails />} /> {/* Lesson details */}
           <Route path="/courses/:courseId/quizzes/create" element={<CreateQuiz />} /> {/* Create new quiz */}
           <Route path="/courses/:courseId/lessons/create" element={<CreateLesson />} /> {/* Create new lesson */}
           <Route path="/courses/:courseId/lessons/:lessonId/edit" element={<EditLesson />} /> {/* Edit lesson */}

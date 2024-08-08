@@ -122,7 +122,7 @@ const CourseDetails = () => {
                   lessons.map((lesson) => (
                     <div key={lesson._id} className="bg-white shadow-md rounded-lg overflow-hidden">
                       <img
-                        src={lesson.imageUrl || 'https://via.placeholder.com/400x200'}
+                        src={lesson.image || 'https://via.placeholder.com/400x200'}
                         alt={lesson.title}
                         className="w-full h-40 object-cover"
                       />
