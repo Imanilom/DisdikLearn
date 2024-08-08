@@ -2,11 +2,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import HeroSection from '../components/Partial/HeroSection'; // Ensure the path is correct
-import About from '../pages/About';
-import Services from '../pages/Services';
-import Team from '../pages/Team';
-import Carousel from '../pages/Carousel';
-import Footer from '../pages/Footer';
+import About from '../components/Partial/About';
+import Services from '../components/Partial/Services';
+import Team from '../components/Partial/Team';
+import Carousel from '../components/Partial/Carousel';
+import Footer from '../components/Partial/Footer';
 const Home = () => {
   // Access user information from the Redux state
   const user = useSelector((state) => state.auth.user);
