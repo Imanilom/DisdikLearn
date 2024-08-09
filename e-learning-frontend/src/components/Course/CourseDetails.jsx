@@ -92,11 +92,18 @@ const CourseDetails = () => {
 
           <div className="mt-6">
             <h3 className="text-2xl font-semibold mb-3">Materials</h3>
+            <div className="mb-4">
+                <Link to={`/courses/${id}/material`}>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    Add New Lesson
+                  </button>
+                </Link>
+              </div>
             <ul className="list-disc pl-5">
               {course.materials.length > 0 ? (
                 course.materials.map((material, index) => (
                   <li key={index} className="mb-1">
-                    <a href={`/${material}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{material}</a>
+                    <a href={`http://localhost:3000/${material}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{material}</a>
                   </li>
                 ))
               ) : (

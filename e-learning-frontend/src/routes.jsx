@@ -20,7 +20,7 @@ import QuizList from './components/Quiz/QuizList';
 import QuizDetails from './components/Quiz/QuizDetails';       
 import CreateQuiz from './components/Quiz/CreateQuiz';         
 import EditQuiz from './components/Quiz/EditQuiz';             
-
+import Uploads from './components/Material/Uploads';
 const AppRoutes = () => {
   return (
     <Router>
@@ -52,6 +52,7 @@ const AppRoutes = () => {
           <Route path="/courses/:courseId/lessons/create" element={<CreateLesson />} /> {/* Create new lesson */}
           <Route path="/courses/:courseId/lessons/:lessonId/edit" element={<EditLesson />} /> {/* Edit lesson */}
           <Route path="/courses/:courseId/quizzes/:quizId/edit" element={<EditQuiz />} /> {/* Edit quiz */}
+          <Route path="/courses/:courseId/material/" element={<Uploads />} /> {/* Add Material */}
           </Route>
         </Routes>
       </div>
