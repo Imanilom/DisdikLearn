@@ -27,6 +27,8 @@ router.post(
   courseController.uploadCourseMaterial
 );
 
+router.get('/:courseId/materials/:filename', courseController.getCourseMaterials);
+
 router.get("/:courseId/lessons", courseController.getCourseLessons);
 router.post("/:courseId/lessons", courseController.createLesson);
 router.get("/:courseId/lessons/:lessonId", courseController.getLesson);

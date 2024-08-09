@@ -71,6 +71,30 @@ const CourseDetails = () => {
     return userAttempts[userAttempts.length - 1].score; // Assuming last entry is the latest
   };
 
+  const downloadMaterial = async (material) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/courses/${id}/materials/${material}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch the file');
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = material.split('/').pop(); // Ensure proper filename
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error('Download failed:', err);
+    }
+  };
+  
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -93,21 +117,26 @@ const CourseDetails = () => {
           <div className="mt-6">
             <h3 className="text-2xl font-semibold mb-3">Materials</h3>
             <div className="mb-4">
-                <Link to={`/courses/${id}/material`}>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                    Add New Lesson
-                  </button>
-                </Link>
-              </div>
+              <Link to={`/courses/${id}/material`}>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                  Add New Lesson
+                </button>
+              </Link>
+            </div>
             <ul className="list-disc pl-5">
               {course.materials.length > 0 ? (
                 course.materials.map((material, index) => (
                   <li key={index} className="mb-1">
-                    <a href={`http://localhost:3000/${material}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{material}</a>
+                    <button
+                      onClick={() => downloadMaterial(material)}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {material.split(`/`).pop()}
+                    </button>
                   </li>
                 ))
               ) : (
-                <p>No materials available.</p>
+                <li>No materials available.</li>
               )}
             </ul>
           </div>
@@ -123,7 +152,6 @@ const CourseDetails = () => {
                   </button>
                 </Link>
               </div>
-              {/* Display only if the user is an instructor */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {lessons.length > 0 ? (
                   lessons.map((lesson) => (

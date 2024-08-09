@@ -1,5 +1,7 @@
 const Course = require("../models/course.model");
 const Lesson = require("../models/lesson.model");
+const path = require('path');
+const fs = require('fs');
 
 // Create Course
 const createCourse = async (req, res) => {
@@ -136,6 +138,26 @@ const uploadCourseMaterial = async (req, res) => {
   } catch (error) {
     res.status(500).send({ error: "Error uploading course material" });
   }
+};
+
+// Controller function to get course materials
+const getCourseMaterials = (req, res) => {
+  const { courseId, filename } = req.params;
+  const filePath = path.join(__dirname, '..', 'uploads', filename); // Adjust path as necessary
+
+  // Check if file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send({ error: 'File not found' });
+    }
+
+    // Send file
+    res.sendFile(filePath, { root: path.join(__dirname, '..', 'uploads') }, (err) => {
+      if (err) {
+        res.status(500).send({ error: 'Error sending file' });
+      }
+    });
+  });
 };
 
 // Create course lesson
@@ -289,4 +311,5 @@ module.exports = {
   deleteLesson,
   getLesson,
   getCourseLessons,
+  getCourseMaterials,
 };
