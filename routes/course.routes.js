@@ -23,11 +23,12 @@ router.post(
 router.post(
   "/:id/materials",
   authorize("instructor"),
-  upload.single("materials"),
   courseController.uploadCourseMaterial
 );
 
 router.get('/:courseId/materials/:filename', courseController.getCourseMaterials);
+router.put('/:courseId/materials/:filename', authorize("instructor"), courseController.updateCourseMaterial);
+router.delete('/:courseId/materials/:material', authorize("instructor"), courseController.deleteCourseMaterial);
 
 router.get("/:courseId/lessons", courseController.getCourseLessons);
 router.post("/:courseId/lessons", courseController.createLesson);

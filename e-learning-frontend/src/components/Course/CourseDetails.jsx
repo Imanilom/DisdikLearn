@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import LoadingErrorPage from '../Partial/LoadingErrorPage';
 
 const CourseDetails = () => {
   const { id } = useParams(); // Get the course ID from the URL
@@ -71,32 +72,55 @@ const CourseDetails = () => {
     return userAttempts[userAttempts.length - 1].score; // Assuming last entry is the latest
   };
 
-  const downloadMaterial = async (material) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/courses/${id}/materials/${material}`, {
+  const handleUpdateMaterial = (material) => {
+    const newMaterialPath = prompt('Enter the new material path:');
+    if (!newMaterialPath) return;
+  
+    axios
+      .put(`http://localhost:3000/api/courses/${id}/materials/${material}`, { newMaterialPath }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      })
+      .then(response => {
+        alert('Material updated successfully');
+        setCourse(prevCourse => ({
+          ...prevCourse,
+          materials: prevCourse.materials.map(m => (m === material ? response.data.material : m)),
+        }));
+      })
+      .catch(error => {
+        console.error('Error updating material:', error);
+        alert('Failed to update material');
       });
-      if (!response.ok) {
-        throw new Error('Failed to fetch the file');
-      }
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = material.split('/').pop(); // Ensure proper filename
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (err) {
-      console.error('Download failed:', err);
+  };
+  
+  const handleDeleteMaterial = (material) => {
+    if (window.confirm('Are you sure you want to delete this material?')) {
+      axios
+        .delete(`http://localhost:3000/api/courses/${id}/materials/${material}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(() => {
+          alert('Material deleted successfully');
+          setCourse(prevCourse => ({
+            ...prevCourse,
+            materials: prevCourse.materials.filter(m => m !== material),
+          }));
+        })
+        .catch(error => {
+          console.error('Error deleting material:', error);
+          alert('Failed to delete material');
+        });
     }
   };
   
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading || error) {
+    return <LoadingErrorPage loading={loading} error={error} />;
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -119,7 +143,7 @@ const CourseDetails = () => {
             <div className="mb-4">
               <Link to={`/courses/${id}/material`}>
                 <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                  Add New Lesson
+                  Add New Material
                 </button>
               </Link>
             </div>
@@ -127,12 +151,14 @@ const CourseDetails = () => {
               {course.materials.length > 0 ? (
                 course.materials.map((material, index) => (
                   <li key={index} className="mb-1">
-                    <button
-                      onClick={() => downloadMaterial(material)}
+                    <a 
+                      href={material} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
                       className="text-blue-600 hover:underline"
                     >
-                      {material.split(`/`).pop()}
-                    </button>
+                      {material.split('/').pop()}
+                    </a>
                   </li>
                 ))
               ) : (
@@ -140,6 +166,7 @@ const CourseDetails = () => {
               )}
             </ul>
           </div>
+
 
           {/* Display Lesson Management based on Role */}
           {user.role === 'instructor' && (

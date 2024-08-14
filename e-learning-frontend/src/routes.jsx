@@ -12,6 +12,7 @@ import Header from './components/Partial/Header';
 import CourseList from './components/Course/CourseList';
 import CourseDetails from './components/Course/CourseDetails';
 import EditCourse from './components/Course/EditCourse';
+import CreateCourse from './components/Course/CreateCourse';
 import LessonList from './components/Lessons/LessonList';       
 import LessonDetails from './components/Lessons/LessonDetails'; 
 import CreateLesson from './components/Lessons/CreateLesson';   
@@ -46,6 +47,7 @@ const AppRoutes = () => {
           </Route>
           <Route element={<PrivateRoute roles={['instructor']} />}>
           <Route path="/courses/:id/edit" element={<EditCourse />} /> {/* Edit course */}
+          <Route path="/courses/create" element={<CreateCourse />} /> {/* Create course */}
           <Route path="/courses/:courseId/lessons" element={<LessonList />} /> {/* List lessons */}
           <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetails />} /> {/* Lesson details */}
           <Route path="/courses/:courseId/quizzes/create" element={<CreateQuiz />} /> {/* Create new quiz */}

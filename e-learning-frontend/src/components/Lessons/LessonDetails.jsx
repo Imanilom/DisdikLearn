@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import LoadingErrorPage from '../Partial/LoadingErrorPage';
 
 const LessonDetails = () => {
   const { courseId, lessonId } = useParams();
@@ -69,8 +70,9 @@ const LessonDetails = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading || error) {
+    return <LoadingErrorPage loading={loading} error={error} />;
+  }
 
   return (
     <div className="container mx-auto p-4">

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import image from '../../assets/3974104.jpg';
+import LoadingErrorPage from '../Partial/LoadingErrorPage'; // Import the component
+
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,8 +58,9 @@ const CourseList = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading || error) {
+    return <LoadingErrorPage loading={loading} error={error} />;
+  }
 
   return (
     <div className="container mx-auto p-4">

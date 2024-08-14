@@ -127,15 +127,23 @@ const uploadCourseMaterial = async (req, res) => {
       return res.status(404).send({ error: "Course not found" });
     }
 
-    // Save the uploaded file's path to the course materials array
-    course.materials.push(req.file.path);
+    // Expecting the materialUrl to be sent in the request body
+    const { materialUrl } = req.body;
+
+    if (!materialUrl) {
+      return res.status(400).send({ error: "Material URL is required" });
+    }
+
+    // Save the downloadURL to the course materials array
+    course.materials.push(materialUrl);
     await course.save();
 
     res.status(201).send({
       message: "Course material uploaded successfully",
-      path: req.file.path,
+      materialUrl: materialUrl,
     });
   } catch (error) {
+    console.error('Error uploading course material:', error);
     res.status(500).send({ error: "Error uploading course material" });
   }
 };
@@ -159,6 +167,57 @@ const getCourseMaterials = (req, res) => {
     });
   });
 };
+
+const updateCourseMaterial = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.status(404).send({ error: "Course not found" });
+    }
+
+    const materialIndex = course.materials.indexOf(req.params.material);
+    if (materialIndex === -1) {
+      return res.status(404).send({ error: "Material not found" });
+    }
+
+    // Update the material (e.g., replace the existing one)
+    course.materials[materialIndex] = req.body.newMaterialPath;
+    await course.save();
+
+    res.status(200).send({
+      message: "Course material updated successfully",
+      material: course.materials[materialIndex],
+    });
+  } catch (error) {
+    res.status(500).send({ error: "Error updating course material" });
+  }
+};
+
+
+const deleteCourseMaterial = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.status(404).send({ error: "Course not found" });
+    }
+
+    const materialIndex = course.materials.indexOf(req.params.material);
+    if (materialIndex === -1) {
+      return res.status(404).send({ error: "Material not found" });
+    }
+
+    // Remove the material
+    course.materials.splice(materialIndex, 1);
+    await course.save();
+
+    res.status(200).send({ message: "Course material deleted successfully" });
+  } catch (error) {
+    res.status(500).send({ error: "Error deleting course material" });
+  }
+};
+
 
 // Create course lesson
 const createLesson = async (req, res) => {
@@ -312,4 +371,6 @@ module.exports = {
   getLesson,
   getCourseLessons,
   getCourseMaterials,
+  deleteCourseMaterial,
+  updateCourseMaterial,
 };
