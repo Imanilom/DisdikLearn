@@ -19,6 +19,7 @@ router.post(
   courseController.enrollInCourse
 );
 
+
 // Route to upload course material (Instructor only)
 router.post(
   "/:id/materials",

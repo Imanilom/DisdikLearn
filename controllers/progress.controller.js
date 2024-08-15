@@ -56,42 +56,50 @@ exports.markLessonAsComplete = async (req, res) => {
   }
 };
 
-exports.getProgressByCourse = async (req, res) => {
-  const { courseId } = req.params;
-  const userId = req.user._id;
-
+exports.CheckCourseProgress = async (req, res) => {
   try {
-    const course = await Course.findById(courseId).populate('lessons');
-    if (!course) {
-      return res.status(404).json({ error: "Course not found" });
-    }
+    const { courseId } = req.params;
+    const userId = req.user._id;
 
-    const progress = await Progress.findOne({
-      user: userId,
-      course: courseId,
-    }).populate("completedLessons");
+    // Find the progress record for this user and course
+    const progress = await Progress.findOne({ user: userId, course: courseId }).populate('completedLessons');
 
     if (!progress) {
-      return res
-        .status(404)
-        .json({ error: "Progress not found for the course" });
+      return res.status(404).json({ message: 'Progress not found' });
     }
 
-    // Calculate progress percentage
-    const totalLessons = course.lessons.length;
-    const completedLessons = progress.completedLessons.length;
-    const percentageCompleted = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
-
-    res.status(200).json({
-      course: {
-        ...course.toObject(),
-        completedLessons: progress.completedLessons,
-        percentageCompleted,
-        totalLessons,
-        completedLessons,
-      }
-    });
+    res.json(progress);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: 'Failed to fetch progress', error });
   }
 };
+
+
+exports.getCourseProgress = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const userId = req.user._id;
+
+    // Find the progress record for this user and course
+    const progress = await Progress.findOne({ user: userId, course: courseId }).populate('completedLessons');
+
+    if (!progress) {
+      return res.status(404).json({ message: 'Progress not found' });
+    }
+
+    // Find the total number of lessons in the course
+    const totalLessons = await Lesson.countDocuments({ course: courseId });
+
+    // Calculate the percentage of completed lessons
+    const completedLessonsCount = progress.completedLessons.length;
+    const completionPercentage = (completedLessonsCount / totalLessons) * 100;
+
+    res.json({
+      progress,
+      completionPercentage: completionPercentage.toFixed(2),  // Round to 2 decimal places
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch progress', error });
+  }
+};
+

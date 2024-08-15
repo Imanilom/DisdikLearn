@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import LoadingErrorPage from '../Partial/LoadingErrorPage'; // Import the component
+import LoadingErrorPage from '../Partial/LoadingErrorPage';
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -22,7 +22,27 @@ const CourseList = () => {
           },
         });
 
-        setCourses(Array.isArray(response.data) ? response.data : []);
+        const coursesWithProgress = await Promise.all(response.data.map(async (course) => {
+          try {
+            const progressResponse = await axios.get(`http://localhost:3000/api/courses/${course._id}/getprogress`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            return {
+              ...course,
+              completionPercentage: progressResponse.data.completionPercentage || 0,
+            };
+          } catch (err) {
+            console.warn(`No progress found for course ${course._id}. Defaulting to 0%.`);
+            return {
+              ...course,
+              completionPercentage: 0, // Set default progress if not found
+            };
+          }
+        }));
+
+        setCourses(coursesWithProgress);
       } catch (err) {
         setError(err.message || 'Failed to fetch courses');
       } finally {
@@ -77,6 +97,12 @@ const CourseList = () => {
               <div className="p-4">
                 <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
                 <p className="text-gray-700 mb-4">{course.description.slice(0, 100)}...</p>
+                <div className="w-full bg-gray-400 rounded-full h-8 mb-4">
+                  <div className="bg-blue-500 h-8 rounded-full" style={{ width: `${course.completionPercentage}%` }}>
+                    <p className="text-white p-1 pl-2">{course.completionPercentage}%</p>
+                  </div>
+                </div>
+                
                 <div className="flex flex-col space-y-2">
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"

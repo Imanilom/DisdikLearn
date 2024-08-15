@@ -168,7 +168,7 @@ const CourseDetails = () => {
           </div>
 
 
-          {/* Display Lesson Management based on Role */}
+         {/* Display Lessons based on Role */}
           {user.role === 'instructor' && (
             <div className="mt-6">
               <h3 className="text-2xl font-semibold mb-3">Lessons</h3>
@@ -191,6 +191,31 @@ const CourseDetails = () => {
                       <div className="p-4">
                         <h4 className="text-xl font-semibold mb-2">{lesson.title || 'No title available'}</h4>
                         <Link to={`/courses/${id}/lessons/${lesson._id}/edit`} className="text-blue-500 hover:underline">Edit Lesson</Link>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No lessons available.</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {user.role === 'student' && (
+            <div className="mt-6">
+              <h3 className="text-2xl font-semibold mb-3">Your Lessons</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {lessons.length > 0 ? (
+                  lessons.map((lesson) => (
+                    <div key={lesson._id} className="bg-white shadow-md rounded-lg overflow-hidden">
+                      <img
+                        src={lesson.image || 'https://via.placeholder.com/400x200'}
+                        alt={lesson.title}
+                        className="w-full h-40 object-cover"
+                      />
+                      <div className="p-4">
+                        <h4 className="text-xl font-semibold mb-2">{lesson.title || 'No title available'}</h4>
+                        <Link to={`/courses/${id}/lessons/${lesson._id}`} className="text-blue-500 hover:underline">View Lesson</Link>
                       </div>
                     </div>
                   ))

@@ -119,6 +119,7 @@ const enrollInCourse = async (req, res) => {
   }
 };
 
+
 const uploadCourseMaterial = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
