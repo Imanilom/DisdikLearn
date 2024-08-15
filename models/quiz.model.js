@@ -5,6 +5,7 @@ const quizSchema = new mongoose.Schema({
   questions: [
     {
       question: { type: String, required: true, trim: true },
+      image: { type: String, default: '' }, // Add this line
       options: [
         {
           option: { type: String, required: true, trim: true },
@@ -31,8 +32,7 @@ const quizSchema = new mongoose.Schema({
   ],
   picture: {
     type: String,
-    default:
-      'https://via.placeholder.com/1200x400',
+    default: 'https://via.placeholder.com/1200x400',
   },
 });
 

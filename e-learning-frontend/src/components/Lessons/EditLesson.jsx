@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill'; // Import ReactQuill
+import 'react-quill/dist/quill.snow.css'; // Import Quill's CSS
 import {
   getDownloadURL,
   getStorage,
@@ -91,6 +93,19 @@ const EditLesson = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/api/courses/${courseId}/lessons/${lessonId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate(`/courses/${courseId}/lessons`);
+    } catch (err) {
+      setImageError(err.message || 'Failed to delete lesson');
+    }
+  };
+
   return (
     <div className="container mx-auto mt-4">
       <h2 className="text-2xl font-bold mb-4">Edit Lesson</h2>
@@ -107,11 +122,10 @@ const EditLesson = () => {
         </div>
         <div className="mb-4">
           <label className="block mb-2 text-sm font-bold text-gray-700">Content</label>
-          <textarea
+          <ReactQuill
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
-            required
+            onChange={setContent}
+            className="border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
           />
         </div>
         <div className="mb-4 flex flex-col items-center">
@@ -125,7 +139,7 @@ const EditLesson = () => {
           <img
             src={image || existingImage || 'https://via.placeholder.com/1200x400'}
             alt="Lesson"
-            className="h-full w-full cursor-pointer rounded object-cover"
+            className="h-auto w-auto pt-10 cursor-pointer rounded object-cover"
             onClick={() => fileRef.current.click()}
           />
           <p className="text-sm mt-2">
@@ -142,10 +156,18 @@ const EditLesson = () => {
             )}
           </p>
         </div>
-        <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600">
-          Update Lesson
-        </button>
-      
+        <div className="flex justify-between mt-4">
+          <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600">
+            Update Lesson
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+          >
+            Delete Lesson
+          </button>
+        </div>
       </form>
     </div>
   );

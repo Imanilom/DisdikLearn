@@ -27,9 +27,8 @@ router.post(
   courseController.uploadCourseMaterial
 );
 
-router.get('/:courseId/materials/:filename', courseController.getCourseMaterials);
-router.put('/:courseId/materials/:filename', authorize("instructor"), courseController.updateCourseMaterial);
-router.delete('/:courseId/materials/:material', authorize("instructor"), courseController.deleteCourseMaterial);
+router.get('/:courseId/materials/:material', courseController.getCourseMaterials);
+router.delete('/:courseId/materials/', authorize("instructor"), courseController.deleteCourseMaterial);
 
 router.get("/:courseId/lessons", courseController.getCourseLessons);
 router.post("/:courseId/lessons", courseController.createLesson);

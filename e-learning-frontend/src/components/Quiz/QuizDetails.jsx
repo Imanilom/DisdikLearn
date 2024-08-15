@@ -67,6 +67,15 @@ const QuizDetails = () => {
         {quiz.questions.map((question, qIndex) => (
           <div key={qIndex} className="mb-4">
             <h3 className="text-lg font-semibold">{question.question}</h3>
+            {question.image && (
+              <div className="mb-2">
+                <img
+                  src={question.image}
+                  alt={`Question ${qIndex + 1}`}
+                  className="w-auto h-auto object-cover rounded mb-2"
+                />
+              </div>
+            )}
             {question.options.map((option, oIndex) => (
               <div key={oIndex} className="mt-2 flex items-center">
                 <input

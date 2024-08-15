@@ -29,34 +29,34 @@ const Header = () => {
           {user ? (
             <>
               <button
-                className="hover:bg-gray-500 px-3 py-2 rounded-md"
+                className="hover:bg-blue-100 font-bold px-3 py-2 rounded-md"
                 onClick={() => navigate('/dashboard')}
               >
                 Dashboard ({user.role})
               </button>
               <button
-                className="hover:bg-gray-500 px-3 py-2 rounded-md"
+                className="hover:bg-blue-100 font-bold px-3 py-2 rounded-md"
                 onClick={() => navigate('/profile')}
               >
                 {user.name}
               </button>
-              <button
-                className="hover:bg-gray-500 px-3 py-2 rounded-md"
+              {/* <button
+                className="hover:bg-blue-100 font-bold px-3 py-2 rounded-md"
                 onClick={handleLogout}
               >
                 Logout
-              </button>
+              </button> */}
             </>
           ) : (
             <>
               <button
-                className="hover:bg-gray-500 px-3 py-2 rounded-md"
+                className="hover:bg-blue-100 font-bold px-3 py-2 rounded-md"
                 onClick={() => navigate('/login')}
               >
                 Login
               </button>
               <button
-                className="hover:bg-gray-500 px-3 py-2 rounded-md"
+                className="hover:bg-blue-100 font-bold px-3 py-2 rounded-md"
                 onClick={() => navigate('/register')}
               >
                 Register

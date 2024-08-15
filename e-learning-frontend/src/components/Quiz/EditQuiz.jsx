@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
+import { app } from '../../firebase'; // Adjust the path if needed
 
 const EditQuiz = () => {
   const { courseId, quizId } = useParams();
@@ -8,7 +15,11 @@ const EditQuiz = () => {
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [imagePercent, setImagePercent] = useState(0);
+  const [imageError, setImageError] = useState(false);
+  const fileRef = useRef(null);
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -29,6 +40,41 @@ const EditQuiz = () => {
 
     fetchQuiz();
   }, [courseId, quizId, token]);
+
+  const handleFileUpload = async (imageFile, qIndex) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + imageFile.name;
+    const storageRef = ref(storage, `quizzes/questions/${fileName}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImagePercent(Math.round(progress));
+      },
+      (error) => {
+        setImageError(true);
+        console.error('Upload failed:', error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          const newQuestions = [...quiz.questions];
+          newQuestions[qIndex].image = downloadURL;
+          setQuiz({ ...quiz, questions: newQuestions });
+          setImageUrl(downloadURL);
+        });
+      }
+    );
+  };
+
+  const handleImageChange = (qIndex, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      handleFileUpload(file, qIndex);
+    }
+  };
 
   const handleQuestionChange = (index, e) => {
     const { name, value } = e.target;
@@ -61,6 +107,31 @@ const EditQuiz = () => {
       ...quiz,
       questions: [...quiz.questions, { question: '', options: [{ option: '' }], correctAnswer: 0 }],
     });
+  };
+
+  const handleDeleteQuestion = async (qIndex) => {
+    try {
+      const newQuestions = [...quiz.questions];
+      newQuestions.splice(qIndex, 1);
+      setQuiz({ ...quiz, questions: newQuestions });
+    } catch (err) {
+      setError(err.message || 'Failed to delete question');
+    }
+  };
+
+  const handleDeleteQuiz = async () => {
+    if (window.confirm('Are you sure you want to delete this quiz?')) {
+      try {
+        await axios.delete(`http://localhost:3000/api/courses/${courseId}/quizzes/${quizId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        navigate(`/courses/${courseId}/quizzes`);
+      } catch (err) {
+        setError(err.message || 'Failed to delete quiz');
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -108,6 +179,37 @@ const EditQuiz = () => {
               className="border rounded px-3 py-2 w-full"
               required
             />
+            {question.image && (
+              <div className="mb-2">
+                <img
+                  src={question.image}
+                  alt={`Question ${qIndex + 1}`}
+                  className="h-1/4 w-1/4 cursor-pointer rounded object-cover"
+                />
+              </div>
+            )}
+            <input
+              type="file"
+              ref={fileRef}
+              hidden
+              accept="image/*"
+              onChange={(e) => handleImageChange(qIndex, e)}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current.click()}
+              className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 mt-2"
+            >
+              Upload Image
+            </button>
+            {imagePercent > 0 && imagePercent < 100 && (
+              <p className="text-slate-700">{`Uploading: ${imagePercent}%`}</p>
+            )}
+            {imageError && (
+              <p className="text-red-700">
+                Error uploading image (file size must be less than 2 MB)
+              </p>
+            )}
             {question.options.map((option, oIndex) => (
               <div key={oIndex} className="mt-2 flex items-center">
                 <input
@@ -133,21 +235,35 @@ const EditQuiz = () => {
             >
               Add Option
             </button>
+            <button
+              type="button"
+              onClick={() => handleDeleteQuestion(qIndex)}
+              className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 mt-2 ml-2"
+            >
+              Delete Question
+            </button>
           </div>
         ))}
         <button
           type="button"
           onClick={handleAddQuestion}
-          className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 mt-4"
+          className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 mr-4 mt-4"
         >
           Add Question
         </button>
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-4 mt-4"
         >
           {loading ? 'Updating...' : 'Update Quiz'}
+        </button>
+        <button
+          type="button"
+          onClick={handleDeleteQuiz}
+          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mt-4 mr-4 ml-2"
+        >
+          Delete Quiz
         </button>
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </form>

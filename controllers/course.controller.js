@@ -171,19 +171,19 @@ const getCourseMaterials = (req, res) => {
 
 const updateCourseMaterial = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id);
+    const course = await Course.findById(req.params.courseId);
 
     if (!course) {
       return res.status(404).send({ error: "Course not found" });
     }
 
-    const materialIndex = course.materials.indexOf(req.params.material);
+    const materialIndex = course.materials.findIndex((m) => m._id.toString() === req.params.materialId);
     if (materialIndex === -1) {
       return res.status(404).send({ error: "Material not found" });
     }
 
     // Update the material (e.g., replace the existing one)
-    course.materials[materialIndex] = req.body.newMaterialPath;
+    course.materials[materialIndex].path = req.body.newMaterialPath;
     await course.save();
 
     res.status(200).send({
@@ -195,30 +195,33 @@ const updateCourseMaterial = async (req, res) => {
   }
 };
 
-
 const deleteCourseMaterial = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id);
+    const courseId = req.params.courseId;
+    const materialUrl = req.body.material; // Get the material URL from the request body
+
+    const course = await Course.findById(courseId);
 
     if (!course) {
       return res.status(404).send({ error: "Course not found" });
     }
 
-    const materialIndex = course.materials.indexOf(req.params.material);
+    // Find the index of the material by matching the URL
+    const materialIndex = course.materials.findIndex((m) => m === materialUrl);
     if (materialIndex === -1) {
       return res.status(404).send({ error: "Material not found" });
     }
 
-    // Remove the material
+    // Remove the material from the array
     course.materials.splice(materialIndex, 1);
     await course.save();
 
     res.status(200).send({ message: "Course material deleted successfully" });
   } catch (error) {
+    console.error('Error deleting material:', error);
     res.status(500).send({ error: "Error deleting course material" });
   }
 };
-
 
 // Create course lesson
 const createLesson = async (req, res) => {

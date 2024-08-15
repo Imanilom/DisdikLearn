@@ -48,7 +48,6 @@ const LessonList = () => {
               />
               <div className="p-4">
                 <h3 className="text-xl font-semibold mb-2">{lesson.title}</h3>
-                <p className="text-gray-700 mb-4">{lesson.content}</p>
                 <a href={`/courses/${courseId}/lessons/${lesson._id}`} className="text-blue-500 hover:underline">
                   View Details
                 </a>

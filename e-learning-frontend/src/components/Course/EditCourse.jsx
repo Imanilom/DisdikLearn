@@ -88,6 +88,19 @@ const EditCourse = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/api/courses/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate('/courses');
+    } catch (error) {
+      console.error('Error deleting course:', error);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Edit Course</h1>
@@ -146,9 +159,18 @@ const EditCourse = () => {
             )}
           </p>
         </div>
-        <button type="submit" className="bg-green-700 text-white px-4 py-2 rounded">
-          Update
-        </button>
+        <div className="flex justify-between mt-4">
+          <button type="submit" className="bg-green-700 text-white px-4 py-2 rounded">
+            Update
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Delete
+          </button>
+        </div>
       </form>
     </div>
   );

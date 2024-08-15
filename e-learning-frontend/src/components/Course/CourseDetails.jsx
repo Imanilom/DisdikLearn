@@ -72,52 +72,41 @@ const CourseDetails = () => {
     return userAttempts[userAttempts.length - 1].score; // Assuming last entry is the latest
   };
 
-  const handleUpdateMaterial = (material) => {
-    const newMaterialPath = prompt('Enter the new material path:');
-    if (!newMaterialPath) return;
-  
-    axios
-      .put(`http://localhost:3000/api/courses/${id}/materials/${material}`, { newMaterialPath }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(response => {
-        alert('Material updated successfully');
-        setCourse(prevCourse => ({
-          ...prevCourse,
-          materials: prevCourse.materials.map(m => (m === material ? response.data.material : m)),
-        }));
-      })
-      .catch(error => {
-        console.error('Error updating material:', error);
-        alert('Failed to update material');
-      });
+  const extractFileName = (url) => {
+    // Extract the part after the last %2F and before the ? in the URL
+    const parts = url.split('%2F');
+    const lastPart = parts[parts.length - 1];
+    return lastPart.split('?')[0];
   };
-  
-  const handleDeleteMaterial = (material) => {
+
+  const handleDeleteMaterial = async (material) => {
     if (window.confirm('Are you sure you want to delete this material?')) {
-      axios
-        .delete(`http://localhost:3000/api/courses/${id}/materials/${material}`, {
+      try {
+        // Send a DELETE request with the material URL in the request body
+        await axios.delete(`http://localhost:3000/api/courses/${id}/materials`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        })
-        .then(() => {
-          alert('Material deleted successfully');
-          setCourse(prevCourse => ({
-            ...prevCourse,
-            materials: prevCourse.materials.filter(m => m !== material),
-          }));
-        })
-        .catch(error => {
-          console.error('Error deleting material:', error);
-          alert('Failed to delete material');
+          data: { material }, // Use 'data' to send the body in DELETE request
         });
+  
+        // Refresh the course details
+        const response = await axios.get(`http://localhost:3000/api/courses/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setCourse(response.data);
+  
+      } catch (error) {
+        setError('Failed to delete material');
+        console.error('Error deleting material:', error);
+      }
     }
   };
   
-
+  
+  
   if (loading || error) {
     return <LoadingErrorPage loading={loading} error={error} />;
   }
@@ -140,13 +129,15 @@ const CourseDetails = () => {
 
           <div className="mt-6">
             <h3 className="text-2xl font-semibold mb-3">Materials</h3>
-            <div className="mb-4">
-              <Link to={`/courses/${id}/material`}>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                  Add New Material
-                </button>
-              </Link>
-            </div>
+            {user.role === 'instructor' && (
+              <div className="mb-4">
+                <Link to={`/courses/${id}/material`}>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    Add New Material
+                  </button>
+                </Link>
+              </div>
+            )}
             <ul className="list-disc pl-5">
               {course.materials.length > 0 ? (
                 course.materials.map((material, index) => (
@@ -157,8 +148,18 @@ const CourseDetails = () => {
                       rel="noopener noreferrer" 
                       className="text-blue-600 hover:underline"
                     >
-                      {material.split('/').pop()}
+                      {extractFileName(material)}
                     </a>
+                    {user.role === 'instructor' && (
+                      <>
+                        <button 
+                          className="ml-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                          onClick={() => handleDeleteMaterial(material)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                   </li>
                 ))
               ) : (
@@ -167,8 +168,7 @@ const CourseDetails = () => {
             </ul>
           </div>
 
-
-         {/* Display Lessons based on Role */}
+          {/* Display Lessons based on Role */}
           {user.role === 'instructor' && (
             <div className="mt-6">
               <h3 className="text-2xl font-semibold mb-3">Lessons</h3>
@@ -272,7 +272,7 @@ const CourseDetails = () => {
           </div>
         </div>
       ) : (
-        <p>No course details available.</p>
+        <p>Course not found</p>
       )}
     </div>
   );

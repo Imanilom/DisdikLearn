@@ -8,6 +8,8 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../../firebase'; // Adjust the path if needed
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 const CreateLesson = () => {
   const { courseId } = useParams();
@@ -86,11 +88,11 @@ const CreateLesson = () => {
         </div>
         <div className="mb-4">
           <label className="block mb-2 text-sm font-bold text-gray-700">Content</label>
-          <textarea
+          <ReactQuill
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
-            required
+            onChange={setContent}
+            className="h-64"
+            theme="snow"
           />
         </div>
         <div className="mb-4 flex flex-col items-center">
@@ -104,7 +106,7 @@ const CreateLesson = () => {
           <img
             src={imageUrl || 'https://via.placeholder.com/1200x400'}
             alt="Lesson"
-            className="h-full w-full cursor-pointer rounded object-cover"
+            className="h-auto pt-10 w-auto cursor-pointer rounded object-cover"
             onClick={() => fileRef.current.click()}
           />
           <p className="text-sm mt-2">
