@@ -97,13 +97,14 @@ const CourseList = () => {
               <div className="p-4">
                 <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
                 <p className="text-gray-700 mb-4">{course.description.slice(0, 100)}...</p>
-                <div className="w-full bg-gray-400 rounded-full h-8 mb-4">
-                  <div className="bg-blue-500 h-8 rounded-full" style={{ width: `${course.completionPercentage}%` }}>
-                    <p className="text-white p-1 pl-2">{course.completionPercentage}%</p>
-                  </div>
-                </div>
+                
                 
                 <div className="flex flex-col space-y-2">
+                  <div className="w-full bg-gray-400 rounded-full h-8 mb-4">
+                    <div className="bg-blue-500 h-8 rounded-full" style={{ width: `${course.completionPercentage}%` }}>
+                      <p className="text-white p-1 pl-2">{course.completionPercentage}%</p>
+                    </div>
+                  </div>
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                     onClick={() => navigate(`/courses/${course._id}`)}
