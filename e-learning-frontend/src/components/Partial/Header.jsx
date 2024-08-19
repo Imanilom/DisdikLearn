@@ -16,7 +16,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white-700 p-1 text-black shadow-sm">
+    <header className="bg-white p-1 text-black shadow-sm">
       <div className="container mx-auto flex justify-between items-center">
         <div className="cursor-pointer" onClick={() => navigate('/')}>
           <img

@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="bg-white py-10">
       <div className="container mx-auto flex flex-col md:flex-row justify-around items-center text-center md:text-left">
         <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-bold mb-4">Yayasan Pendidikan</h4>
+          <h4 className="text-xl font-bold mb-4">Yayasan Dinas Pendidikan </h4>
           <div className="flex justify-center md:justify-start space-x-4">
             <a href="#" className="text-blue-500 hover:text-blue-700">
               <FaFacebookF className="h-6 w-6" />
@@ -25,7 +25,7 @@ const Footer = () => {
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-bold mb-4">Contact Us</h4>
           <p className="text-blue-500">+62 834 587 1478</p>
-          <p className="text-blue-500">Pendidikanyayasan@Gmail.Com</p>
+          <p className="text-blue-500">DinasPendidikanyayasan@Gmail.Com</p>
         </div>
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-bold mb-4">Lokasi</h4>

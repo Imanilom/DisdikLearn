@@ -1,6 +1,6 @@
 // components/HeroSection.jsx
 import React from 'react';
-import heroImage from '../../assets/hero-1.jpg'; // Replace with your background image
+import heroImage from '../../assets/Disdik.jpg'; // Replace with your background image
 
 const HeroSection = () => {
   return (
