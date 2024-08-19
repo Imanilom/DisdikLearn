@@ -61,14 +61,18 @@ async function deleteComment(req, res) {
 }
 
 // Get comments by post
-async function getCommentsByPost(req, res) {
+const getCommentsByPost = async (req, res) => {
   try {
-    const comments = await Comment.find({ post: req.params.postId });
+    const comments = await Comment.find({ post: req.params.postId })
+      .populate("createdBy", "name") // Populate the createdBy field with the user's name
+      .lean(); // Convert to plain JavaScript objects
+
     res.status(200).json(comments);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-}
+};
+
 
 // Exports at the end of the file
 module.exports = {

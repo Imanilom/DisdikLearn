@@ -1,59 +1,142 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const Comments = ({ postId, courseId }) => {
+const CommentsPage = () => {
+  const { courseId, postId } = useParams();
   const [comments, setComments] = useState([]);
-  const [content, setContent] = useState("");
-
+  const [newComment, setNewComment] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const user = useSelector((state) => state.auth.user);
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/courses/${courseId}/forums/${postId}/comments`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          }
+        );
+        setComments(response.data);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch comments');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchComments();
-  }, []);
+  }, [courseId, postId]);
 
-  const fetchComments = async () => {
+  const handleAddComment = async () => {
     try {
-      const response = await axios.get(`/api/courses/${courseId}/forums/${postId}/comments`);
-      setComments(response.data);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    }
-  };
-
-  const addComment = async () => {
-    try {
-      const newComment = { content };
-      await axios.post(
-        `/api/courses/${courseId}/forums/${postId}/comments`,
-        newComment,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.post(
+        `http://localhost:3000/api/courses/${courseId}/forums/${postId}/comments`,
+        { content: newComment },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      fetchComments();
-      setContent("");
-    } catch (error) {
-      console.error("Error adding comment:", error);
+      setComments([...comments, response.data]);
+      setNewComment('');
+    } catch (err) {
+      setError(err.message || 'Failed to add comment');
     }
   };
+
+  const handleUpdateComment = async (commentId, updatedContent) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/courses/${courseId}/forums/${postId}/comments/${commentId}`,
+        { content: updatedContent },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setComments(comments.map(comment => (comment._id === commentId ? response.data : comment)));
+    } catch (err) {
+      setError(err.message || 'Failed to update comment');
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/courses/${courseId}/forums/${postId}/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setComments(comments.filter(comment => comment._id !== commentId));
+    } catch (err) {
+      setError(err.message || 'Failed to delete comment');
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      <h3>Comments</h3>
-      <div>
-        {comments.map((comment) => (
-          <div key={comment._id}>
+    <div className="container mx-auto mt-4 p-4 border rounded shadow-sm">
+      <h2 className="text-2xl font-bold mb-4">Comments</h2>
+      {comments.length > 0 ? (
+        comments.map((comment) => (
+          <div key={comment._id} className="mb-4 p-4 border rounded bg-gray-100">
             <p>{comment.content}</p>
-            <p>By: {comment.createdBy.name}</p>
+            <small>By: {comment.createdBy.name}</small>
+            {user && user._id === comment.createdBy._id && (
+              <div className="mt-2">
+                <button
+                  className="text-blue-500 underline mr-2"
+                  onClick={() => {
+                    const updatedContent = prompt('Update your comment:', comment.content);
+                    if (updatedContent) handleUpdateComment(comment._id, updatedContent);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="text-red-500 underline"
+                  onClick={() => handleDeleteComment(comment._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
-        ))}
+        ))
+      ) : (
+        <p>No comments available.</p>
+      )}
+
+      <div className="mt-4">
+        <textarea
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          className="w-full p-2 border rounded"
+          placeholder="Add a comment..."
+        />
+        <button
+          onClick={handleAddComment}
+          className="bg-blue-500 text-white px-4 py-2 mt-2 rounded-md hover:bg-blue-600"
+        >
+          Add Comment
+        </button>
       </div>
-      <textarea
-        placeholder="Add a comment"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      ></textarea>
-      <button onClick={addComment}>Add Comment</button>
     </div>
   );
 };
 
-export default Comments;
+export default CommentsPage;
