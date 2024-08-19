@@ -23,8 +23,10 @@ import CreateQuiz from './components/Quiz/CreateQuiz';
 import EditQuiz from './components/Quiz/EditQuiz';             
 import Uploads from './components/Material/Uploads';
 import AdminPage from './pages/Admin';
+import ForumPostList from './components/Forum/ForumList';
 import Forum from './components/Forum/Forum';
-import PostDetails from './components/Forum/Post';
+import Comments from './components/Forum/Comments';
+import Leaderboard from './components/Badges/Leaderboard';
 
 const AppRoutes = () => {
   return (
@@ -44,8 +46,9 @@ const AppRoutes = () => {
             <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetails />} /> {/* Lesson details */}
             <Route path="/courses/:courseId/quizzes" element={<QuizList />} /> {/* List quizzes */}
             <Route path="/courses/:courseId/quizzes/:quizId" element={<QuizDetails />} /> {/* Quiz details */}
-            <Route path="/courses/:courseId/forums" element={<Forum />} /> {/* Forum for a course */}
-            <Route path="/courses/:courseId/forums/:postId" element={<PostDetails />} /> {/* Post details */}
+            <Route path="/courses/:courseId/forumslist" element={<ForumPostList />} /> {/* Forum for a course */}
+            <Route path="/courses/:courseId/forums/:postId" element={<Forum />} /> {/* Forum for a course */}
+            <Route path="/courses/:courseId/forums/:postId/comments" element={<Comments />} /> {/* Comments details */}
           </Route>
           
           <Route element={<PrivateRoute roles={['admin']} />}>

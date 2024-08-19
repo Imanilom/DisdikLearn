@@ -129,6 +129,12 @@ const CourseList = () => {
                   >
                     View Details
                   </button>
+                  <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                    onClick={() => navigate(`/courses/${course._id}/forumslist`)}
+                  >
+                    Go To Forum
+                  </button>
                   {user.role === 'instructor' && (
                     <button
                       className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"

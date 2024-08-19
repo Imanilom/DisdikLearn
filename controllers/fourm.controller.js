@@ -23,12 +23,22 @@ const getPosts = async (req, res) => {
   try {
     const posts = await ForumPost.find({
       course: req.params.courseId,
-    }).populate("createdBy", "name");
+    })
+      .populate("createdBy", "name")
+      .lean(); // Convert to plain JavaScript objects
+
+    // Add upvote and downvote counts
+    posts.forEach((post) => {
+      post.upvotes = post.votes.filter((vote) => vote.vote === 1).length;
+      post.downvotes = post.votes.filter((vote) => vote.vote === -1).length;
+    });
+
     res.status(200).json(posts);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 const searchPosts = async (req, res) => {
   try {
