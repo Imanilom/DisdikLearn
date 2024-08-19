@@ -1,16 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
+import { app } from '../../firebase'; // Adjust the path if needed
 
 const CreateQuiz = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
-  const [questions, setQuestions] = useState([{ question: '', options: [{ option: '' }], correctAnswer: 0 }]);
+  const [questions, setQuestions] = useState([{ question: '', options: [{ option: '' }], correctAnswer: 0, image: '' }]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [image, setImage] = useState(null);
+  const [imagePercent, setImagePercent] = useState(0);
+  const [imageError, setImageError] = useState(false);
+  const fileRef = useRef(null);
 
   const token = localStorage.getItem('token');
+
+  const handleFileUpload = async (imageFile, qIndex) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + imageFile.name;
+    const storageRef = ref(storage, `quizzes/questions/${fileName}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImagePercent(Math.round(progress));
+      },
+      (error) => {
+        setImageError(true);
+        console.error('Upload failed:', error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          const newQuestions = [...questions];
+          newQuestions[qIndex].image = downloadURL;
+          setQuestions(newQuestions);
+        });
+      }
+    );
+  };
+
+  const handleImageChange = (qIndex, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      handleFileUpload(file, qIndex);
+    }
+  };
 
   const handleQuestionChange = (index, e) => {
     const { name, value } = e.target;
@@ -39,7 +84,7 @@ const CreateQuiz = () => {
   };
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, { question: '', options: [{ option: '' }], correctAnswer: 0 }]);
+    setQuestions([...questions, { question: '', options: [{ option: '' }], correctAnswer: 0, image: '' }]);
   };
 
   const handleSubmit = async (e) => {
@@ -87,6 +132,37 @@ const CreateQuiz = () => {
               className="border rounded px-3 py-2 w-full"
               required
             />
+            {question.image && (
+              <div className="mb-2">
+                <img
+                  src={question.image}
+                  alt={`Question ${qIndex + 1}`}
+                  className="h-full w-full cursor-pointer rounded object-cover"
+                />
+              </div>
+            )}
+            <input
+              type="file"
+              ref={fileRef}
+              hidden
+              accept="image/*"
+              onChange={(e) => handleImageChange(qIndex, e)}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current.click()}
+              className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 mt-2"
+            >
+              Upload Image
+            </button>
+            {imagePercent > 0 && imagePercent < 100 && (
+              <p className="text-slate-700">{`Uploading: ${imagePercent}%`}</p>
+            )}
+            {imageError && (
+              <p className="text-red-700">
+                Error uploading image (file size must be less than 2 MB)
+              </p>
+            )}
             {question.options.map((option, oIndex) => (
               <div key={oIndex} className="mt-2 flex items-center">
                 <input
@@ -108,7 +184,7 @@ const CreateQuiz = () => {
             <button
               type="button"
               onClick={() => handleAddOption(qIndex)}
-              className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300"
+              className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 mt-2"
             >
               Add Option
             </button>
@@ -117,7 +193,7 @@ const CreateQuiz = () => {
         <button
           type="button"
           onClick={handleAddQuestion}
-          className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300"
+          className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 mr-4 mt-4"
         >
           Add Question
         </button>

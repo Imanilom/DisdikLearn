@@ -26,7 +26,7 @@ const CreateCourse = () => {
   const handleFileUpload = async (image) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name;
-    const storageRef = ref(storage, fileName);
+    const storageRef = ref(storage, `course/${fileName}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
     uploadTask.on(
@@ -70,7 +70,7 @@ const CreateCourse = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto">
       <h1 className="text-3xl font-bold mb-4">Create Course</h1>
       <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-md">
         <div className="mb-4">
@@ -103,7 +103,7 @@ const CreateCourse = () => {
           <img
             src={imageUrl || 'https://via.placeholder.com/1200x400'}
             alt="Course"
-            className="h-full w-full cursor-pointer rounded object-cover"
+            className="h-1/2 w-1/2 cursor-pointer rounded object-cover"
             onClick={() => fileRef.current.click()}
           />
           <p className="text-sm mt-2">

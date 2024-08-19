@@ -28,6 +28,20 @@ router.put(
   quizController.updateQuiz
 );
 
+// Route to delete a specific question from a quiz
+router.delete(
+  "/courses/:courseId/quizzes/:quizId/questions/:questionIndex",
+  authorize("instructor"),
+  quizController.deleteQuestion
+);
+
+// Route to delete an entire quiz
+router.delete(
+  "/courses/:courseId/quizzes/:quizId",
+  authorize("instructor"),
+  quizController.deleteQuiz
+);
+
 // Route to attempt a quiz, identified by quizId
 router.post(
   "/courses/:courseId/quizzes/:quizId/attempt",

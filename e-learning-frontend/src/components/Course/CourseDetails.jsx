@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import LoadingErrorPage from '../Partial/LoadingErrorPage';
 
 const CourseDetails = () => {
   const { id } = useParams(); // Get the course ID from the URL
@@ -71,32 +72,44 @@ const CourseDetails = () => {
     return userAttempts[userAttempts.length - 1].score; // Assuming last entry is the latest
   };
 
-  const downloadMaterial = async (material) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/courses/${id}/materials/${material}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch the file');
+  const extractFileName = (url) => {
+    // Extract the part after the last %2F and before the ? in the URL
+    const parts = url.split('%2F');
+    const lastPart = parts[parts.length - 1];
+    return lastPart.split('?')[0];
+  };
+
+  const handleDeleteMaterial = async (material) => {
+    if (window.confirm('Are you sure you want to delete this material?')) {
+      try {
+        // Send a DELETE request with the material URL in the request body
+        await axios.delete(`http://localhost:3000/api/courses/${id}/materials`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: { material }, // Use 'data' to send the body in DELETE request
+        });
+  
+        // Refresh the course details
+        const response = await axios.get(`http://localhost:3000/api/courses/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setCourse(response.data);
+  
+      } catch (error) {
+        setError('Failed to delete material');
+        console.error('Error deleting material:', error);
       }
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = material.split('/').pop(); // Ensure proper filename
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (err) {
-      console.error('Download failed:', err);
     }
   };
   
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  
+  
+  if (loading || error) {
+    return <LoadingErrorPage loading={loading} error={error} />;
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -116,23 +129,37 @@ const CourseDetails = () => {
 
           <div className="mt-6">
             <h3 className="text-2xl font-semibold mb-3">Materials</h3>
-            <div className="mb-4">
-              <Link to={`/courses/${id}/material`}>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                  Add New Lesson
-                </button>
-              </Link>
-            </div>
+            {user.role === 'instructor' && (
+              <div className="mb-4">
+                <Link to={`/courses/${id}/material`}>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    Add New Material
+                  </button>
+                </Link>
+              </div>
+            )}
             <ul className="list-disc pl-5">
               {course.materials.length > 0 ? (
                 course.materials.map((material, index) => (
                   <li key={index} className="mb-1">
-                    <button
-                      onClick={() => downloadMaterial(material)}
+                    <a 
+                      href={material} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
                       className="text-blue-600 hover:underline"
                     >
-                      {material.split(`/`).pop()}
-                    </button>
+                      {extractFileName(material)}
+                    </a>
+                    {user.role === 'instructor' && (
+                      <>
+                        <button 
+                          className="ml-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                          onClick={() => handleDeleteMaterial(material)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                   </li>
                 ))
               ) : (
@@ -141,7 +168,7 @@ const CourseDetails = () => {
             </ul>
           </div>
 
-          {/* Display Lesson Management based on Role */}
+          {/* Display Lessons based on Role */}
           {user.role === 'instructor' && (
             <div className="mt-6">
               <h3 className="text-2xl font-semibold mb-3">Lessons</h3>
@@ -164,6 +191,31 @@ const CourseDetails = () => {
                       <div className="p-4">
                         <h4 className="text-xl font-semibold mb-2">{lesson.title || 'No title available'}</h4>
                         <Link to={`/courses/${id}/lessons/${lesson._id}/edit`} className="text-blue-500 hover:underline">Edit Lesson</Link>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No lessons available.</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {user.role === 'student' && (
+            <div className="mt-6">
+              <h3 className="text-2xl font-semibold mb-3">Your Lessons</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {lessons.length > 0 ? (
+                  lessons.map((lesson) => (
+                    <div key={lesson._id} className="bg-white shadow-md rounded-lg overflow-hidden">
+                      <img
+                        src={lesson.image || 'https://via.placeholder.com/400x200'}
+                        alt={lesson.title}
+                        className="w-full h-40 object-cover"
+                      />
+                      <div className="p-4">
+                        <h4 className="text-xl font-semibold mb-2">{lesson.title || 'No title available'}</h4>
+                        <Link to={`/courses/${id}/lessons/${lesson._id}`} className="text-blue-500 hover:underline">View Lesson</Link>
                       </div>
                     </div>
                   ))
@@ -220,7 +272,7 @@ const CourseDetails = () => {
           </div>
         </div>
       ) : (
-        <p>No course details available.</p>
+        <p>Course not found</p>
       )}
     </div>
   );

@@ -19,15 +19,16 @@ router.post(
   courseController.enrollInCourse
 );
 
+
 // Route to upload course material (Instructor only)
 router.post(
   "/:id/materials",
   authorize("instructor"),
-  upload.single("materials"),
   courseController.uploadCourseMaterial
 );
 
-router.get('/:courseId/materials/:filename', courseController.getCourseMaterials);
+router.get('/:courseId/materials/:material', courseController.getCourseMaterials);
+router.delete('/:courseId/materials/', authorize("instructor"), courseController.deleteCourseMaterial);
 
 router.get("/:courseId/lessons", courseController.getCourseLessons);
 router.post("/:courseId/lessons", courseController.createLesson);

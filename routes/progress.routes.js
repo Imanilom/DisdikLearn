@@ -8,10 +8,17 @@ router.post(
   auth,
   progressController.markLessonAsComplete
 );
+
 router.get(
-  "/courses/:courseId/progress",
+  "/courses/:courseId/checkprogress",
   auth,
-  progressController.getProgressByCourse
+  progressController.CheckCourseProgress
+);
+
+router.get(
+  "/courses/:courseId/getprogress",
+  auth,
+  progressController.getCourseProgress
 );
 
 module.exports = router;

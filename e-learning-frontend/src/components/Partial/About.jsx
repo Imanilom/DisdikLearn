@@ -1,67 +1,73 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const About = () => {
-    // Mengakses informasi pengguna dari state Redux
-    const user = useSelector((state) => state.auth.user);
+  const [activeTab, setActiveTab] = useState(0);
 
-    return (
-        <section className="bg-gray-100 py-20">
-            <div className="container mx-auto px-6 text-center">
-                <h2 className="text-4xl font-bold mb-2 text-gray-800">
-                    About Us
-                </h2>
-                <p className="text-gray-700 mb-8">
-                    We are a team of passionate developers and designers dedicated to creating the best user experiences.
-                </p>
-                <div className="flex flex-wrap justify-center">
-                    <div className="w-full md:w-1/2 lg:w-1/4 px-4 py-2">
-                        <div className="bg-white rounded-lg shadow-lg p-6">
-                            <img src="../src/assets/disdik.jpg" alt="Our Mission" className="w-full h-48 object-cover mb-4 rounded-lg" />
-                            <h3 className="text-2xl font-bold mb-2 text-gray-800">
-                                Our Mission
-                            </h3>
-                            <p className="text-gray-600">
-                                To deliver top-notch solutions that help businesses grow.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="w-full md:w-1/2 lg:w-1/4 px-4 py-2">
-                        <div className="bg-white rounded-lg shadow-lg p-6">
-                            <img src="../src/assets/disdik.jpg" alt="Our Vision" className="w-full h-48 object-cover mb-4 rounded-lg" />
-                            <h3 className="text-2xl font-bold mb-2 text-gray-800">
-                                Our Vision
-                            </h3>
-                            <p className="text-gray-600">
-                                To be a leading provider of innovative technology solutions.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="w-full md:w-1/2 lg:w-1/4 px-4 py-2">
-                        <div className="bg-white rounded-lg shadow-lg p-6">
-                            <img src="../src/assets/disdik.jpg" alt="Our Values" className="w-full h-48 object-cover mb-4 rounded-lg" />
-                            <h3 className="text-2xl font-bold mb-2 text-gray-800">
-                                Our Values
-                            </h3>
-                            <p className="text-gray-600">
-                                Integrity, innovation, and customer satisfaction.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="w-full md:w-1/2 lg:w-1/4 px-4 py-2 ">
-                        <div className="bg-white rounded-lg shadow-lg p-6">
-                            <img src="../src/assets/disdik.jpg" alt="Our Team" className="w-full h-48 object-cover mb-4 rounded-lg" />
-                            <h3 className="text-2xl font-bold mb-2 text-gray-800">
-                                Our Team
-                            </h3>
-                            <p className="text-gray-600">
-                                A dedicated group of professionals committed .
-                            </p>
-                        </div>
-                    </div>
-                </div>
+  const narratives = [
+    {
+      title: 'Our Mission',
+      content: 'We are dedicated to providing quality education and resources to learners everywhere. Our mission is to make learning accessible and engaging through innovative solutions.',
+      imgSrc: '../src/assets/blog-1.jpg', // Replace with your image URL
+    },
+    {
+      title: 'Our Vision',
+      content: 'Our vision is to be a leading provider of educational technology solutions that empower learners and educators globally. We strive to create a future where education is inclusive and effective.',
+      imgSrc: '../src/assets/hero-1.jpg', // Replace with your image URL
+    },
+    {
+      title: 'Our Values',
+      content: 'Integrity, innovation, and inclusivity are at the core of our values. We believe in fostering a culture of honesty, creativity, and respect for all individuals.',
+      imgSrc: '../src/assets/Disdik.jpg', // Replace with your image URL
+    },
+  ];
+
+  return (
+    <section className="min-h-screen w-full bg-white-100 flex items-center justify-center py-6">
+      <div className="w-full max-w-6xl px-4">
+        <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-6">About Us</h1>
+        <div className="w-16 border-t-2 border-blue-600 mb-6 mx-auto"></div>
+        <div className="flex flex-col md:flex-row items-center">
+          {/* Image */}
+          <div className="md:w-1/2 flex justify-center mb-6 md:mb-0">
+            <AnimatePresence>
+              <motion.img
+                key={narratives[activeTab].imgSrc}
+                src={narratives[activeTab].imgSrc}
+                alt={narratives[activeTab].title}
+                className="w-full h-auto max-w-full md:max-w-md rounded-lg shadow-lg"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5 }}
+              />
+            </AnimatePresence>
+          </div>
+
+          {/* Text Content */}
+          <div className="md:w-1/2 flex flex-col items-center md:items-start">
+            <h3 className="text-xl md:text-2xl font-semibold mb-4 text-center md:text-left">{narratives[activeTab].title}</h3>
+            <p className="text-gray-700 mb-6 text-center md:text-left">{narratives[activeTab].content}</p>
+            <div className="flex flex-wrap justify-center space-x-4">
+              {narratives.map((narrative, index) => (
+                <button
+                  key={index}
+                  className={`px-4 py-2 rounded-md border-2 ${
+                    activeTab === index
+                      ? 'bg-blue-500 text-white border-blue-500'
+                      : 'bg-white text-blue-500 border-blue-500'
+                  }`}
+                  onClick={() => setActiveTab(index)}
+                >
+                  {narrative.title}
+                </button>
+              ))}
             </div>
-        </section>
-    );
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
+
 export default About;

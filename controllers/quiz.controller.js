@@ -41,6 +41,41 @@ const updateQuiz = async (req, res) => {
   }
 };
 
+// Delete a specific question from a quiz
+const deleteQuestion = async (req, res) => {
+  const { courseId, quizId, questionIndex } = req.params;
+  try {
+    const quiz = await Quiz.findOne({ _id: quizId, course: courseId });
+    if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
+
+    quiz.questions.splice(questionIndex, 1);
+    await quiz.save();
+    res.status(200).json(quiz);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete a quiz
+const deleteQuiz = async (req, res) => {
+  const { courseId, quizId } = req.params;
+  try {
+    const course = await Course.findById(courseId);
+    if (!course) return res.status(404).json({ message: 'Course not found' });
+
+    const quizIndex = course.quizzes.indexOf(quizId);
+    if (quizIndex > -1) {
+      course.quizzes.splice(quizIndex, 1);
+      await course.save();
+    }
+
+    await Quiz.findByIdAndDelete(quizId);
+    res.status(200).json({ message: 'Quiz deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 const getQuizzesByCourse = async (req, res) => {
   try {
@@ -106,4 +141,6 @@ module.exports = {
   attemptQuiz,
   getQuizById,
   updateQuiz,
+  deleteQuestion,
+  deleteQuiz,
 };

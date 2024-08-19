@@ -45,7 +45,7 @@ const EditCourse = () => {
   const handleFileUpload = async (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, fileName);
+    const storageRef = ref(storage, `course/${fileName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -85,6 +85,19 @@ const EditCourse = () => {
       navigate('/courses');
     } catch (error) {
       console.error('Error updating course:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/api/courses/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate('/courses');
+    } catch (error) {
+      console.error('Error deleting course:', error);
     }
   };
 
@@ -146,9 +159,18 @@ const EditCourse = () => {
             )}
           </p>
         </div>
-        <button type="submit" className="bg-green-700 text-white px-4 py-2 rounded">
-          Update
-        </button>
+        <div className="flex justify-between mt-4">
+          <button type="submit" className="bg-green-700 text-white px-4 py-2 rounded">
+            Update
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Delete
+          </button>
+        </div>
       </form>
     </div>
   );
