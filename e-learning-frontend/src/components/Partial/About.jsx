@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
 const About = () => {
   const [activeTab, setActiveTab] = useState(0);
 
@@ -25,8 +24,8 @@ const About = () => {
   return (
     <section className="min-h-screen w-full bg-white-100 flex items-center justify-center py-6">
       <div className="w-full max-w-6xl px-4">
-        <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-600 mb-6">About Us</h1>
-        <div className="w-16 border-t-2 border-blue-600 mb-6 mx-auto"></div>
+        <h1 className="text-3xl md:text-4xl font-bold text-center text-lime-300 mb-6">About Us</h1>
+        <div className="w-16 border-t-2 bg-lime-200 mb-6 mx-auto"></div>
         <div className="flex flex-col md:flex-row items-center">
           {/* Image */}
           <div className="md:w-1/2 flex justify-center mb-6 md:mb-0">
@@ -54,8 +53,8 @@ const About = () => {
                   key={index}
                   className={`px-4 py-2 rounded-md border-2 ${
                     activeTab === index
-                      ? 'bg-blue-500 text-white border-blue-500'
-                      : 'bg-white text-blue-500 border-blue-500'
+                      ? 'bg-lime-300 text-white border-lime-200-500'
+                      : 'bg-white text-lime-500 border-lime-500'
                   }`}
                   onClick={() => setActiveTab(index)}
                 >

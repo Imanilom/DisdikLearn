@@ -3,7 +3,7 @@ import { FaFacebookF, FaYoutube, FaInstagram, FaLinkedinIn } from 'react-icons/f
 
 const Footer = () => {
   return (
-    <footer className="bg-white py-10">
+    <footer className="bg-lime-100 py-10">
       <div className="container mx-auto flex flex-col md:flex-row justify-around items-center text-center md:text-left">
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-bold mb-4">Yayasan Dinas Pendidikan </h4>
@@ -24,11 +24,11 @@ const Footer = () => {
         </div>
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-bold mb-4">Contact Us</h4>
-          <p className="text-blue-500">+62 834 587 1478</p>
+          <p className="text-black">+62 834 587 1478</p>
 
-          <p className="text-blue-500">DinasPendidikanyayasan@Gmail.Com</p>
-=======
-          <p className="text-blue-500">Pendidikanyayasan@gmail.com</p>
+          <p className="text-black">DinasPendidikanyayasan@Gmail.Com</p>
+--------
+          <p className="text-black">Pendidikanyayasan@gmail.com</p>
         </div>
         <div className="mb-6 md:mb-0">
           <h4 className="text-xl font-bold mb-4">Lokasi</h4>
@@ -40,8 +40,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="border-t border-blue-500 mt-6 pt-6 text-center">
-        <p className="text-blue-500">Created By Yayasan Pendidikan | All Rights Are Reserved!</p>
+      <div className="border-t border-white mt-6 pt-6 text-center">
+        <p className="text-black">Created By Yayasan Pendidikan | All Rights Are Reserved!</p>
       </div>
     </footer>
   );

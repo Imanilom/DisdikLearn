@@ -6,7 +6,7 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
+  const navigate = useNavigate(); 
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -20,7 +20,12 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div
+      className="flex justify-center items-center min-h-screen bg-cover bg-center"
+      style={{
+        backgroundImage: "url('../src/assets/Disdik.jpg ')",
+      }}
+    >
       <div className="w-full max-w-md bg-white p-8 rounded-md shadow-md">
         <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
         <form onSubmit={handleRegister}>
@@ -54,7 +59,7 @@ const Register = () => {
               required
             />
           </div>
-          <button type="submit" className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600">
+          <button type="submit" className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-blue-600">
             Register
           </button>
         </form>

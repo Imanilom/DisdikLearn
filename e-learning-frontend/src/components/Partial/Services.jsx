@@ -25,8 +25,8 @@ const Service = () => {
 
     return (
         <div className="min-h-screen flex flex-col items-center bg-white-100 py-10">
-            <h1 className="text-4xl font-bold text-blue-600 mb-4">Our Services</h1>
-            <div className="w-16 border-t-2 border-blue-600 mb-6"></div>
+            <h1 className="text-4xl font-bold text-lime-300 mb-4">Our Services</h1>
+            <div className="w-16 border-t-2 border-lime-300 mb-6"></div>
             <div className="flex flex-wrap justify-center max-w-5xl mx-auto">
                 {services.map((service, index) => (
                     <motion.div
@@ -41,14 +41,14 @@ const Service = () => {
                             alt={service.title}
                             className="w-24 h-24 mb-4 rounded-full border-2 border-blue-500 object-cover" // Ensure the image fits well
                         />
-                        <h2 className="text-xl font-semibold mb-2 text-center text-blue-700">{service.title}</h2>
+                        <h2 className="text-xl font-semibold mb-2 text-center text-lime-400">{service.title}</h2>
                         <p className="text-gray-700 text-center flex-1 flex items-center justify-center">{service.description}</p>
                     </motion.div>
                 ))}
             </div>
             {user && (
                 <div className="mt-8 text-center">
-                    <button className="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors">
+                    <button className="bg-lime-300 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors">
                         {user.role === 'admin' ? 'Manage Services' : 'Learn More'}
                     </button>
                 </div>
