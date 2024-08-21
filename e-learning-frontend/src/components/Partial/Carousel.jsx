@@ -40,8 +40,8 @@ const ReviewCard = ({ name, review, image, rating }) => (
 
 const StudentReviews = () => (
     <div className="max-w-5xl mx-auto py-12 px-4">
-        <h2 className="text-3xl font-bold text-center text-lime-300 mb-8">Our Students' Reviews</h2>
-        <div className="w-16 border-t-2 items-center border-lime-400 mb-6 mx-auto"></div>
+        <h2 className="text-3xl font-bold text-center text-black-300 mb-8">Our Students' Reviews</h2>
+        <div className="w-16 border-t-2 items-center border-gray-400 mb-6 mx-auto"></div>
         <Carousel
             showArrows={true}
             showThumbs={false}

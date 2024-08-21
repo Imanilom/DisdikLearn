@@ -24,33 +24,34 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center">
         <div className="cursor-pointer" onClick={() => navigate('/')}>
           <img
-            src={logo} 
+            src={logo}
             alt="Platform Logo"
             className="h-10"
           />
         </div>
+
         {user && (
-          <div className="hidden lg:flex absolute left-60 transform -translate-x-1/2 flex items-center space-x-2">
+          <div className="hidden lg:flex flex-1 justify-center items-center space-x-4">
             <button
-              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-lime-200"
+              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
               onClick={() => navigate('/dashboard')}
             >
               Dashboard 
             </button>
             <button
-              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-lime-200"
+              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
               onClick={() => navigate('/AboutUs')}
             >
               About 
             </button>
             <button
-              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-lime-200"
+              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
               onClick={() => navigate('/Services')}
             >
               Services 
             </button>
             <button
-              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-lime-200"
+              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
               onClick={() => navigate('/Team')}
             >
               Team
@@ -67,7 +68,7 @@ const Header = () => {
           </svg>
         </button>
 
-        <nav className="hidden lg:flex space-x-4 flex-grow justify-end">
+        <nav className="hidden lg:flex space-x-4 justify-end">
           {user ? (
             <>
               <button

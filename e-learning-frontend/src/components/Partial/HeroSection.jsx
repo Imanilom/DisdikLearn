@@ -43,13 +43,13 @@ const HeroSection = () => {
 
           <div className="flex space-x-5 mt-8">
             <button
-              className="bg-lime-300 text-black py-3 px-6 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
+              className="bg-gray-300 text-black py-3 px-6 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
               onClick={handleClick}
             >
               Get Started
             </button>
             <button
-              className="bg-lime-300 text-black py-3 px-6 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
+              className="bg-gray-300 text-black py-3 px-6 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
               onClick={handleClick}
             >
               Learn More
@@ -115,7 +115,7 @@ const HeroSection = () => {
 
           <div className="mt-6 md:mt-0">
             <button
-              className="bg-lime-300 text-black py-3 px-6 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
+              className="bg-gray-300 text-black py-3 px-6 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
               onClick={handleClick}
             >
               Book Drop-in
