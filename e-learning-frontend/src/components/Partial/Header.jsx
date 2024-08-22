@@ -86,6 +86,14 @@ const Header = () => {
                 >
                   Dashboard
                 </button>
+
+                <button
+                  className="block w-full text-left px-4 py-2 text-black rounded-md hover:bg-gray-100"
+                  onClick={() => { navigate('/Leaderboard'); setIsDropdownOpen(false); }}
+                >
+                  Rangking
+                </button>
+
                 <button
                   className="block w-full text-left px-4 py-2 text-black rounded-md hover:bg-gray-100"
                   onClick={handleLogout}
