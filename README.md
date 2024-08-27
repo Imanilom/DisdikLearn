@@ -21,20 +21,15 @@
 
    ## Installation
 
-   1. Clone the repository:
-      `git clone https://github.com/shahghasiadil/elearning-platform-api`
-
-   `cd elearning-platform-api`
-
-   2. Install the dependencies:
+   1. Install the dependencies:
 
    ```
    npm install
    ```
 
-   3. Create a `.env` file in the root directory and add your MongoDB connection string and JWT secret:
+   2. Create a `.env` file in the root directory and add your MongoDB connection string and JWT secret:
 
-   4. Start the server:
+   3. Start the server:
 
    ```
    npm run start
