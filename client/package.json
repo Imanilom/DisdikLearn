@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.2",
+    "elearnig-api": "file:..",
     "firebase": "^10.12.5",
     "framer-motion": "^11.3.27",
     "quill": "^2.0.2",
