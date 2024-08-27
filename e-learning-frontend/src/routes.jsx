@@ -49,6 +49,7 @@ const AppRoutes = () => {
             <Route path="/courses/:courseId/forumslist" element={<ForumPostList />} /> {/* Forum for a course */}
             <Route path="/courses/:courseId/forums/:postId" element={<Forum />} /> {/* Forum for a course */}
             <Route path="/courses/:courseId/forums/:postId/comments" element={<Comments />} /> {/* Comments details */}
+            <Route path="/Leaderboard" element={<Leaderboard />} />
           </Route>
           
           <Route element={<PrivateRoute roles={['admin']} />}>
