@@ -15,7 +15,7 @@ const QuizDetails = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses/${courseId}/quizzes/${quizId}`, {
+        const response = await axios.get(`/api/courses/${courseId}/quizzes/${quizId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -42,7 +42,7 @@ const QuizDetails = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`http://localhost:3000/api/courses/${courseId}/quizzes/${quizId}/attempt`, {
+      await axios.post(`/api/courses/${courseId}/quizzes/${quizId}/attempt`, {
         answers,
       }, {
         headers: {

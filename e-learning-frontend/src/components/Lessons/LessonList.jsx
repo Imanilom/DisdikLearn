@@ -14,7 +14,7 @@ const LessonList = () => {
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses/${courseId}/lessons`, {
+        const response = await axios.get(`/api/courses/${courseId}/lessons`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

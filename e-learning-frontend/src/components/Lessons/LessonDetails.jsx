@@ -16,12 +16,12 @@ const LessonDetails = () => {
     const fetchLessonAndProgress = async () => {
       try {
         const [lessonResponse, progressResponse] = await Promise.all([
-          axios.get(`http://localhost:3000/api/courses/${courseId}/lessons/${lessonId}`, {
+          axios.get(`/api/courses/${courseId}/lessons/${lessonId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          axios.get(`http://localhost:3000/api/courses/${courseId}/checkprogress`, {
+          axios.get(`/api/courses/${courseId}/checkprogress`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -48,7 +48,7 @@ const LessonDetails = () => {
   const markLessonAsComplete = async () => {
     try {
       await axios.post(
-        `http://localhost:3000/api/courses/${courseId}/lessons/${lessonId}/complete`,
+        `/api/courses/${courseId}/lessons/${lessonId}/complete`,
         {}, // Empty object for the request body if there's no data to send
         {
           headers: {

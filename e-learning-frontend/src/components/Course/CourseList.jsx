@@ -16,7 +16,7 @@ const CourseList = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/courses', {
+        const response = await axios.get('/api/courses', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -25,7 +25,7 @@ const CourseList = () => {
         const coursesWithProgress = await Promise.all(response.data.map(async (course) => {
           if (course.lessons && course.lessons.length > 0) {
             try {
-              const progressResponse = await axios.get(`http://localhost:3000/api/courses/${course._id}/getprogress`, {
+              const progressResponse = await axios.get(`/api/courses/${course._id}/getprogress`, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
@@ -70,7 +70,7 @@ const CourseList = () => {
   const handleEnroll = async (courseId) => {
     try {
       await axios.post(
-        `http://localhost:3000/api/courses/${courseId}/enroll`,
+        `/api/courses/${courseId}/enroll`,
         {},
         {
           headers: {

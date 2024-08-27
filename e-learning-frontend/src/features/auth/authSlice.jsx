@@ -11,7 +11,7 @@ const authSlice = createSlice({
     login: (state, action) => {
       const userData = action.payload;
       state.user = userData;
-      const expirationDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000; // 1 week
+      const expirationDate = new Date().getTime() + 1 * 24 * 60 * 60 * 1000; // 1 day
       localStorage.setItem('user', JSON.stringify({ ...userData, expiration: expirationDate }));
     },
     logout: (state) => {

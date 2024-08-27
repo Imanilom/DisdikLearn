@@ -25,7 +25,7 @@ const EditQuiz = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses/${courseId}/quizzes/${quizId}`, {
+        const response = await axios.get(`/api/courses/${courseId}/quizzes/${quizId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -122,7 +122,7 @@ const EditQuiz = () => {
   const handleDeleteQuiz = async () => {
     if (window.confirm('Are you sure you want to delete this quiz?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/courses/${courseId}/quizzes/${quizId}`, {
+        await axios.delete(`/api/courses/${courseId}/quizzes/${quizId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -138,7 +138,7 @@ const EditQuiz = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`http://localhost:3000/api/courses/${courseId}/quizzes/${quizId}`, quiz, {
+      await axios.put(`/api/courses/${courseId}/quizzes/${quizId}`, quiz, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

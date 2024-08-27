@@ -57,7 +57,7 @@ const CreateLesson = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:3000/api/courses/${courseId}/lessons`, {
+      await axios.post(`/api/courses/${courseId}/lessons`, {
         title,
         content,
         image: imageUrl

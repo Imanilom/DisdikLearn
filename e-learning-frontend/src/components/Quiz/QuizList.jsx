@@ -29,14 +29,14 @@ const QuizList = () => {
   useEffect(() => {
     const fetchQuizzesAndCourse = async () => {
       try {
-        const quizResponse = await axios.get(`http://localhost:3000/api/courses/${courseId}/quizzes`, {
+        const quizResponse = await axios.get(`/api/courses/${courseId}/quizzes`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setQuizzes(quizResponse.data);
 
-        const courseResponse = await axios.get(`http://localhost:3000/api/courses/${courseId}`, {
+        const courseResponse = await axios.get(`/api/courses/${courseId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

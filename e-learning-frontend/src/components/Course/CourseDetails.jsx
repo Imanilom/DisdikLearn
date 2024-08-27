@@ -19,7 +19,7 @@ const CourseDetails = () => {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses/${id}`, {
+        const response = await axios.get(`/api/courses/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -30,7 +30,7 @@ const CourseDetails = () => {
         // Fetch lesson details
         if (response.data.lessons && response.data.lessons.length > 0) {
           const lessonRequests = response.data.lessons.map((lessonId) =>
-            axios.get(`http://localhost:3000/api/courses/${id}/lessons/${lessonId}`, {
+            axios.get(`/api/courses/${id}/lessons/${lessonId}`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -41,7 +41,7 @@ const CourseDetails = () => {
         }
 
         // Fetch quizzes
-        const quizzesResponse = await axios.get(`http://localhost:3000/api/courses/${id}/quizzes`, {
+        const quizzesResponse = await axios.get(`/api/courses/${id}/quizzes`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -83,7 +83,7 @@ const CourseDetails = () => {
     if (window.confirm('Are you sure you want to delete this material?')) {
       try {
         // Send a DELETE request with the material URL in the request body
-        await axios.delete(`http://localhost:3000/api/courses/${id}/materials`, {
+        await axios.delete(`/api/courses/${id}/materials`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -91,7 +91,7 @@ const CourseDetails = () => {
         });
   
         // Refresh the course details
-        const response = await axios.get(`http://localhost:3000/api/courses/${id}`, {
+        const response = await axios.get(`/api/courses/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

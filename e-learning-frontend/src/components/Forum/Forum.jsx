@@ -18,7 +18,7 @@ const Forums = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses/${courseId}/forums`, {
+        const response = await axios.get(`/api/courses/${courseId}/forums`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPosts(response.data);
@@ -36,7 +36,7 @@ const Forums = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/courses/${courseId}/forums`,
+        `/api/courses/${courseId}/forums`,
         { ...newPost },
         {
           headers: {
@@ -54,7 +54,7 @@ const Forums = () => {
   const handleSearchPosts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/courses/${courseId}/forums/search`,
+        `/api/courses/${courseId}/forums/search`,
         {
           params: { tags: searchTags },
           headers: {
@@ -71,7 +71,7 @@ const Forums = () => {
   const handleVotePost = async (postId, vote) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/courses/${courseId}/forums/${postId}/vote`,
+        `/api/courses/${courseId}/forums/${postId}/vote`,
         { vote },
         {
           headers: {
@@ -88,7 +88,7 @@ const Forums = () => {
   const handleAcceptAnswer = async (postId, accepted) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/courses/${courseId}/forums/${postId}/accept`,
+        `/api/courses/${courseId}/forums/${postId}/accept`,
         { accepted },
         {
           headers: {

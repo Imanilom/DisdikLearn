@@ -28,7 +28,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserCourses = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses`, {
+        const response = await axios.get(`/api/courses`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -85,7 +85,7 @@ const Profile = () => {
       }
 
       const response = await axios.patch(
-        'http://localhost:3000/api/auth/me',
+        '/api/auth/me',
         updateData,
         {
           headers: {

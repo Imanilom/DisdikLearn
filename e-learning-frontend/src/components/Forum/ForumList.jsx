@@ -12,7 +12,7 @@ const ForumPostList = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses/${courseId}/forums`,
+        const response = await axios.get(`/api/courses/${courseId}/forums`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,

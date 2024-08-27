@@ -58,7 +58,7 @@ const CreateCourse = () => {
     e.preventDefault();
     try {
       const courseData = { title, description, image: imageUrl };
-      await axios.post('http://localhost:3000/api/courses', courseData, {
+      await axios.post('/api/courses', courseData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -27,7 +27,7 @@ const EditCourse = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/courses/${id}`, {
+        const response = await axios.get(`/api/courses/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -77,7 +77,7 @@ const EditCourse = () => {
     e.preventDefault();
     try {
       const courseData = { title, description, image: newImage ? imageUrl : imageUrl };
-      await axios.patch(`http://localhost:3000/api/courses/${id}`, courseData, {
+      await axios.patch(`/api/courses/${id}`, courseData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -90,7 +90,7 @@ const EditCourse = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/courses/${id}`, {
+      await axios.delete(`/api/courses/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

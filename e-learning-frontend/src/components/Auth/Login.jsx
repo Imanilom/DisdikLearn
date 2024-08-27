@@ -13,7 +13,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+      const response = await axios.post('/api/auth/login', { email, password });
       const userData = response.data.user; // Sesuaikan dengan respons API Anda
       const token = response.data.token;
       // Simpan token ke localStorage

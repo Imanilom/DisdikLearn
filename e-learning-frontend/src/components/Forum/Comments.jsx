@@ -16,7 +16,7 @@ const CommentsPage = () => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/courses/${courseId}/forums/${postId}/comments`,
+          `/api/courses/${courseId}/forums/${postId}/comments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ const CommentsPage = () => {
   const handleAddComment = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/courses/${courseId}/forums/${postId}/comments`,
+        `/api/courses/${courseId}/forums/${postId}/comments`,
         { content: newComment },
         {
           headers: {
@@ -55,7 +55,7 @@ const CommentsPage = () => {
   const handleUpdateComment = async (commentId, updatedContent) => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/courses/${courseId}/forums/${postId}/comments/${commentId}`,
+        `/api/courses/${courseId}/forums/${postId}/comments/${commentId}`,
         { content: updatedContent },
         {
           headers: {
@@ -72,7 +72,7 @@ const CommentsPage = () => {
   const handleDeleteComment = async (commentId) => {
     try {
       await axios.delete(
-        `http://localhost:3000/api/courses/${courseId}/forums/${postId}/comments/${commentId}`,
+        `/api/courses/${courseId}/forums/${postId}/comments/${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -15,7 +15,7 @@ const BadgeManagement = () => {
 
   const fetchBadges = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/badges", {
+      const response = await axios.get("/api/badges", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -29,7 +29,7 @@ const BadgeManagement = () => {
   const handleAddBadge = async () => {
     try {
       const newBadge = { name, description, pointsRequired };
-      await axios.post(`http://localhost:3000/api/badges`, {
+      await axios.post(`/api/badges`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -46,7 +46,7 @@ const BadgeManagement = () => {
   const handleUpdateBadge = async (id) => {
     try {
       const updatedBadge = { name, description, pointsRequired };
-      await axios.put(`http://localhost:3000/api/badges/${id}`, {
+      await axios.put(`/api/badges/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -64,7 +64,7 @@ const BadgeManagement = () => {
   const handleDeleteBadge = async (id) => {
     if (window.confirm("Are you sure you want to delete this badge?")) {
       try {
-        await axios.delete(`http://localhost:3000/api/badges/${id}`, {
+        await axios.delete(`/api/badges/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

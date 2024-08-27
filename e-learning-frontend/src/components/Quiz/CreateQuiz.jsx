@@ -91,7 +91,7 @@ const CreateQuiz = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`http://localhost:3000/api/courses/${courseId}/quizzes`, {
+      await axios.post(`/api/courses/${courseId}/quizzes`, {
         title,
         questions,
       }, {

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/auth';
+const API_URL = '/api/auth';
 
 export const login = async (data) => {
-  const response = await axios.post(`http://localhost:3000/api/auth/login`, data);
+  const response = await axios.post(`/api/auth/login`, data);
   // Handle storing the JWT token, etc.
   return response.data;
 };

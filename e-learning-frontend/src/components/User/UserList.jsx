@@ -15,7 +15,7 @@ const UserList = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get('http://localhost:3000/api/auth/users', {
+        const response = await axios.get('/api/auth/users', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

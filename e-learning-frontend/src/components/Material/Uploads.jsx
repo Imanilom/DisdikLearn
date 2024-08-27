@@ -54,7 +54,7 @@ const CourseMaterialManagement = () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           try {
             await axios.post(
-              `http://localhost:3000/api/courses/${courseId}/materials`,
+              `/api/courses/${courseId}/materials`,
               { materialUrl: downloadURL },
               {
                 headers: {
