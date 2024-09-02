@@ -32,7 +32,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white p-3 text-black shadow-sm ">
+    <header className="bg-white p-3 text-black shadow-sm">
       <div className="container mx-auto flex justify-between items-center">
         <div className="cursor-pointer" onClick={() => navigate('/')}>
           <img src={logo} alt="Platform Logo" className="h-10" />
@@ -54,8 +54,8 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Profile dropdown */}
-        {user && (
+        {/* Profile dropdown or login button */}
+        {user ? (
           <div className="relative">
             <button
               className="flex items-center space-x-2 hover:bg-gray-100 font-bold px-3 py-2 rounded-md"
@@ -103,6 +103,13 @@ const Header = () => {
               </div>
             )}
           </div>
+        ) : (
+          <button
+            className="block text-left px-4 py-2 text-black rounded-md transition-transform duration-300 ease-in-out transform hover:shadow-lg hover:scale-105"
+            onClick={() => navigate('/login')}
+          >
+            Login
+          </button>
         )}
 
         <button

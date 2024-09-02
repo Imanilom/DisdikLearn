@@ -20,7 +20,7 @@ const Login = () => {
       localStorage.setItem('token', token);
 
       dispatch(login(userData));
-      navigate('/profile');
+      navigate('/dashboard');
     } catch (error) {
       console.error(error);
       alert('Login gagal. Silakan periksa kembali kredensial Anda.');

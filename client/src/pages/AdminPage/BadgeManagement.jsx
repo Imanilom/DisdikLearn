@@ -16,10 +16,10 @@ const BadgeManagement = () => {
   const fetchBadges = async () => {
     try {
       const response = await axios.get("/api/badges", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setBadges(response.data);
     } catch (error) {
       console.error("Error fetching badges:", error);
@@ -29,11 +29,11 @@ const BadgeManagement = () => {
   const handleAddBadge = async () => {
     try {
       const newBadge = { name, description, pointsRequired };
-      await axios.post(`/api/badges`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }, newBadge);
+      await axios.post("/api/badges", newBadge, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchBadges();
       setName("");
       setDescription("");
@@ -46,11 +46,11 @@ const BadgeManagement = () => {
   const handleUpdateBadge = async (id) => {
     try {
       const updatedBadge = { name, description, pointsRequired };
-      await axios.put(`/api/badges/${id}`, {
+      await axios.put(`/api/badges/${id}`, updatedBadge, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }, updatedBadge);
+      });
       fetchBadges();
       setEditingBadgeId(null);
       setName("");
@@ -65,10 +65,10 @@ const BadgeManagement = () => {
     if (window.confirm("Are you sure you want to delete this badge?")) {
       try {
         await axios.delete(`/api/badges/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         fetchBadges();
       } catch (error) {
         console.error("Error deleting badge:", error);
