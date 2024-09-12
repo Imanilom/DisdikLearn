@@ -1,5 +1,5 @@
-const Siswa = require('../models/Siswa'); // Model Siswa
-const User = require('../models/User');   // Model User
+const Siswa = require('../models/student.model'); // Model Siswa
+const User = require('../models/user.model');   // Model User
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
