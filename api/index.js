@@ -1,11 +1,13 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const path =  require("path")
+const path = require("path");
 require("./config/db.config");
-dotenv.config({path : '../.env'});
 
+// Load environment variables
+dotenv.config();  // Assuming .env is in the root directory
+
+// Route imports
 const userRoutes = require("./routes/user.routes");
 const courseRoutes = require("./routes/course.routes");
 const quizRoutes = require("./routes/quiz.routes");
@@ -18,10 +20,14 @@ const pengelolaanKelasRoutes = require('./routes/pengelolaanKelas.routes');
 const kurikulumRoutes = require('./routes/kurikulum.routes');
 const penilaianRoutes = require('./routes/penilaian.routes');
 const siswaRoutes = require('./routes/siswa.routes');
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
 
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());  // Express v4.16+ already has bodyParser built-in
+
+// Routes
 app.use("/api/auth", userRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api", quizRoutes);
@@ -35,10 +41,13 @@ app.use('/api/kurikulum', kurikulumRoutes);
 app.use('/api/penilaian', penilaianRoutes);
 app.use('/api/siswa', siswaRoutes);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+// Serve the client-side application (React/Vue/etc.)
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+// Set the server port
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

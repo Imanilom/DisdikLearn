@@ -8,7 +8,7 @@ const { authorize } = require('../utils/role');
 router.post('/', auth, authorize('instructor'), penilaianController.createPenilaian);
 
 // Get all Penilaian (Instructor and Admin)
-router.get('/', auth, authorize('instructor', 'admin'), penilaianController.getAllPenilaian);
+router.get('/', auth, authorize('instructor', 'admin'), penilaianController.getAllPenilaians);
 
 // Get Penilaian by ID (Instructor and Admin)
 router.get('/:id', auth, authorize('instructor', 'admin'), penilaianController.getPenilaianById);

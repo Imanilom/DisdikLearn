@@ -1,7 +1,7 @@
 const Kurikulum = require('../models/kurikulum.model');
 
 // Create new Kurikulum
-exports.createKurikulum = async (req, res) => {
+const createKurikulum = async (req, res) => {
   try {
     const kurikulum = new Kurikulum(req.body);
     await kurikulum.save();
@@ -12,7 +12,7 @@ exports.createKurikulum = async (req, res) => {
 };
 
 // Get all Kurikulums
-exports.getAllKurikulums = async (req, res) => {
+const getAllKurikulums = async (req, res) => {
   try {
     const kurikulums = await Kurikulum.find();
     res.status(200).send(kurikulums);
@@ -22,7 +22,7 @@ exports.getAllKurikulums = async (req, res) => {
 };
 
 // Get Kurikulum by ID
-exports.getKurikulumById = async (req, res) => {
+const getKurikulumById = async (req, res) => {
   try {
     const kurikulum = await Kurikulum.findById(req.params.id);
     if (!kurikulum) {
@@ -35,7 +35,7 @@ exports.getKurikulumById = async (req, res) => {
 };
 
 // Update Kurikulum
-exports.updateKurikulum = async (req, res) => {
+const updateKurikulum = async (req, res) => {
   try {
     const kurikulum = await Kurikulum.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!kurikulum) {
@@ -48,7 +48,7 @@ exports.updateKurikulum = async (req, res) => {
 };
 
 // Delete Kurikulum
-exports.deleteKurikulum = async (req, res) => {
+const deleteKurikulum = async (req, res) => {
   try {
     const kurikulum = await Kurikulum.findByIdAndDelete(req.params.id);
     if (!kurikulum) {
@@ -58,4 +58,13 @@ exports.deleteKurikulum = async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+};
+
+// Export all functions
+module.exports = {
+  createKurikulum,
+  getAllKurikulums,
+  getKurikulumById,
+  updateKurikulum,
+  deleteKurikulum,
 };
