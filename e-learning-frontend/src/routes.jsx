@@ -27,16 +27,37 @@ import ForumPostList from './components/Forum/ForumList';
 import Forum from './components/Forum/Forum';
 import Comments from './components/Forum/Comments';
 import Leaderboard from './components/Badges/Leaderboard';
-
+import LmsPKBM from './components/Partial/LmsPKBM';
+import LKP from './components/Partial/LKP'
+import Team from './components/Partial/Team';
+import PaketA from './components/Partial/PaketA';
+import PaketB from './components/Partial/PaketB';
+import PaketC from './components/Partial/PaketC';
+import Marketing from './components/Partial/Marketing';
+import Printing from './components/Partial/Printing';
+import Menjahit from './components/Partial/Menjahit';
+import Pendidikan from './components/Partial/Pendidikan';
 const AppRoutes = () => {
+
   return (
     <Router>
       <Header />
       <div className=""> {/* Container with left and right padding */}
         <Routes>
+
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/lmspkbm" element={<LmsPKBM />} />
+          <Route path="/Lkp" element={<LKP/>} />
+          <Route path="/Team" element={<Team />} />
+          <Route path="/PaketA" element={<PaketA />} />
+          <Route path="/PaketB" element={<PaketB />} />
+          <Route path="/PaketC" element={<PaketC />} />
+          <Route path="/Marketing" element={<Marketing />} />
+          <Route path="/Printing" element={<Printing />} />
+          <Route path="/Menjahit" element={<Menjahit />} />
+          <Route path="/Pendidikan" element={<Pendidikan />} />
           <Route element={<PrivateRoute roles={['student', 'instructor', 'admin']} />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />

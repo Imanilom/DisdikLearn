@@ -2,9 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import HeroSection from '../components/Partial/HeroSection';
 import About from '../components/Partial/About';
-import Services from '../components/Partial/Services';
-import Carousel from '../components/Partial/Carousel';
+import Services from '../components/Partial/Struktur';
 import Footer from '../components/Partial/Footer';
+import MultiPages from '../components/Partial/Multipages';
+import Team from '../components/Partial/Team';
+
 
 const Home = () => {
   const user = useSelector((state) => state.auth.user);
@@ -18,8 +20,10 @@ const Home = () => {
       <section id="services">
         <Services />
       </section>
-      <Carousel />
+      <MultiPages />
+      <Team/>
       <Footer />
+      
     </div>
   );
 };

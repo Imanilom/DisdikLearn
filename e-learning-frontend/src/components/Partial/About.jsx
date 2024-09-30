@@ -1,70 +1,111 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-const About = () => {
-  const [activeTab, setActiveTab] = useState(0);
+import { motion } from 'framer-motion';
 
-  const narratives = [
-    {
-      title: 'Our Mission',
-      content: 'We are dedicated to providing quality education and resources to learners everywhere. Our mission is to make learning accessible and engaging through innovative solutions.',
-      imgSrc: '../src/assets/blog-1.jpg', // Replace with your image URL
-    },
-    {
-      title: 'Our Vision',
-      content: 'Our vision is to be a leading provider of educational technology solutions that empower learners and educators globally. We strive to create a future where education is inclusive and effective.',
-      imgSrc: '../src/assets/hero-1.jpg', // Replace with your image URL
-    },
-    {
-      title: 'Our Values',
-      content: 'Integrity, innovation, and inclusivity are at the core of our values. We believe in fostering a culture of honesty, creativity, and respect for all individuals.',
-      imgSrc: '../src/assets/Disdik.jpg', // Replace with your image URL
-    },
-  ];
+const About = () => {
+  // State untuk mengelola tampilan bagian Visi
+  const [isVisiOpen, setIsVisiOpen] = useState(false);
+  // State untuk mengelola tampilan bagian Misi
+  const [isMisiOpen, setIsMisiOpen] = useState(false);
 
   return (
-    <section className="min-h-screen w-full bg-white-100 flex items-center justify-center py-6">
-      <div className="w-full max-w-6xl px-4">
-        <h1 className="text-3xl md:text-4xl font-bold text-center text-black-300 mb-6">About Us</h1>
-        <div className="w-16 border-t-2 bg-gray-200 mb-6 mx-auto"></div>
-        <div className="flex flex-col md:flex-row items-center">
-          {/* Image */}
-          <div className="md:w-1/2 flex justify-center mb-6 md:mb-0">
-            <AnimatePresence>
-              <motion.img
-                src={narratives[activeTab].imgSrc}
-                alt={narratives[activeTab].title}
-                className="w-full h-auto max-w-full md:max-w-md rounded-lg shadow-lg"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5 }}
-              />
-            </AnimatePresence>
-          </div>
+    <div className="bg-white min-h-screen flex flex-col items-center -mb-40 py-60">
+      <div className="container mx-auto px-4">
+        {/* Hero Section */}
+        <section className="text-left mb-12">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Visi & Misi</h1>
+          <p className="text-lg text-gray-600">
+            Temukan tujuan dan komitmen kami dalam mewujudkan visi dan misi yang
+            berdampak positif untuk masa depan.
+          </p>
+        </section>
 
-          {/* Text Content */}
-          <div className="md:w-1/2 flex flex-col items-center md:items-start">
-            <h3 className="text-xl md:text-2xl font-semibold mb-4 text-center md:text-left">{narratives[activeTab].title}</h3>
-            <p className="text-gray-700 mb-6 text-center md:text-left">{narratives[activeTab].content}</p>
-            <div className="flex flex-wrap justify-center space-x-4">
-              {narratives.map((narrative, index) => (
-                <button
-                  key={index}
-                  className={`px-4 py-2 rounded-md border-2 ${
-                    activeTab === index
-                      ? 'bg-gray-300 text-white border-gray-200-500'
-                      : 'bg-white text-gray-500 border-gray-500'
-                  }`}
-                  onClick={() => setActiveTab(index)}
-                >
-                  {narrative.title}
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* Grid untuk Visi & Misi */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Visi Section */}
+          <motion.section
+            className="bg-white shadow-md rounded-lg p-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <button
+              onClick={() => setIsVisiOpen(!isVisiOpen)}
+              className="w-full text-left font-semibold text-black mb-4 flex items-center justify-between"
+            >
+              <span className="text-2xl">Visi</span>
+              <svg
+                className={`w-6 h-6 transition-transform duration-300 ${isVisiOpen ? 'rotate-180' : ''}`}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {isVisiOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <p className="text-black">
+                  Kami bercita-cita menjadi lembaga pendidikan terdepan yang mencetak
+                  generasi berkualitas dan berdaya saing global, dengan penekanan pada
+                  pembelajaran yang inovatif dan berorientasi pada kebutuhan masa depan.
+                </p>
+              </motion.div>
+            )}
+          </motion.section>
+
+          {/* Misi Section */}
+          <motion.section
+            className="bg-white shadow-md rounded-lg p-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <button
+              onClick={() => setIsMisiOpen(!isMisiOpen)}
+              className="w-full text-left font-semibold text-black mb-4 flex items-center justify-between"
+            >
+              <span className="text-2xl">Misi</span>
+              <svg
+                className={`w-6 h-6 transition-transform duration-300 ${isMisiOpen ? 'rotate-180' : ''}`}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {isMisiOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <ul className="list-disc list-inside text-black">
+                  <li className="mb-2">Menyediakan pendidikan berkualitas tinggi yang relevan dengan perkembangan zaman.</li>
+                  <li className="mb-2">Mendorong pengembangan potensi individu melalui metode pembelajaran yang inovatif.</li>
+                  <li className="mb-2">Menjalin kemitraan dengan berbagai pihak untuk meningkatkan kualitas pendidikan.</li>
+                  <li className="mb-2">Menghasilkan lulusan yang siap menghadapi tantangan global dengan keterampilan yang relevan.</li>
+                </ul>
+              </motion.div>
+            )}
+          </motion.section>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

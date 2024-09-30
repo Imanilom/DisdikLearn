@@ -1,47 +1,93 @@
 import React from 'react';
-import { FaFacebookF, FaYoutube, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 py-10">
-      <div className="container mx-auto flex flex-col md:flex-row justify-around items-center text-center md:text-left">
-        <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-bold mb-4">Yayasan Dinas Pendidikan </h4>
-          <div className="flex justify-center md:justify-start space-x-4">
-            <a href="#" className="text-blue-500 hover:text-blue-700">
-              <FaFacebookF className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-blue-500 hover:text-blue-700">
-              <FaYoutube className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-blue-500 hover:text-blue-700">
-              <FaInstagram className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-blue-500 hover:text-blue-700">
-              <FaLinkedinIn className="h-6 w-6" />
-            </a>
+    <footer className="bg-white text-gray-700 py-8 mt-8">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Top Section */}
+        <div className="flex flex-wrap justify-between">
+          {/* Logo and Description */}
+          <div className="w-full lg:w-1/4 mb-8 lg:mb-0">
+            <img src="../src/assets/logo_yayasan.png" alt="Hostinger Logo" className="mb-4 h-24 w-24" />
+            <p className="text-sm">
+              Hostinger memberikan kemudahan bagi siapa pun yang ingin sukses online. Kami terus menyempurnakan teknologi server, menyediakan bantuan profesional, dan memberikan pengalaman web hosting yang mulus.
+            </p>
+            {/* Payment Methods */}
+            <div className="flex mt-4">
+              <img src="visa.png" alt="Visa" className="h-8 mr-2" />
+              <img src="mastercard.png" alt="MasterCard" className="h-8 mr-2" />
+              <img src="paypal.png" alt="PayPal" className="h-8 mr-2" />
+              {/* Add other payment icons as needed */}
+              <span className="flex items-center">Dan Lainnya</span>
+            </div>
           </div>
-        </div>
-        <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-bold mb-4">Contact Us</h4>
-          <p className="text-black">+62 834 587 1478</p>
 
-          <p className="text-black">DinasPendidikanyayasan@Gmail.Com</p>
-          <div className="w-16 border-t-2 bg-gray-200 mb-6 mx-auto"></div>
-          <p className="text-black">Pendidikanyayasan@gmail.com</p>
-        </div>
-        <div className="mb-6 md:mb-0">
-          <h4 className="text-xl font-bold mb-4">Lokasi</h4>
-          <div className="h-48 w-full md:w-80">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1664.933319726369!2d107.52756376558796!3d-7.020910590264213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68ec329f509361%3A0x220e274e55f0494f!2sDinas%20Pendidikan%20%26%20Kebudayaan!5e0!3m2!1sen!2sid!4v1724203631013!5m2!1sen!2sid"
-             title="Location Map"
-             className="w-full h-auto border-none"
-             loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          {/* Hosting Links */}
+          <div className="w-full sm:w-1/2 lg:w-1/5 mb-8">
+            <h4 className="font-bold mb-4">HOSTING</h4>
+            <ul>
+              <li><a href="#" className="text-sm hover:underline">Web Hosting</a></li>
+              <li><a href="#" className="text-sm hover:underline">VPS Hosting</a></li>
+              <li><a href="#" className="text-sm hover:underline">Cloud Hosting</a></li>
+              <li><a href="#" className="text-sm hover:underline">WordPress Hosting</a></li>
+              {/* Add more items */}
+            </ul>
+          </div>
+
+          {/* Domain Links */}
+          <div className="w-full sm:w-1/2 lg:w-1/5 mb-8">
+            <h4 className="font-bold mb-4">DOMAIN</h4>
+            <ul>
+              <li><a href="#" className="text-sm hover:underline">Domain Murah</a></li>
+              <li><a href="#" className="text-sm hover:underline">Transfer Domain</a></li>
+              <li><a href="#" className="text-sm hover:underline">Domain Gratis</a></li>
+              <li><a href="#" className="text-sm hover:underline">Domain .XYZ</a></li>
+            </ul>
+          </div>
+
+          {/* Informasi Links */}
+          <div className="w-full sm:w-1/2 lg:w-1/5 mb-8">
+            <h4 className="font-bold mb-4">INFORMASI</h4>
+            <ul>
+              <li><a href="#" className="text-sm hover:underline">Migrasi Website</a></li>
+              <li><a href="#" className="text-sm hover:underline">Status Sistem</a></li>
+              <li><a href="#" className="text-sm hover:underline">Afiliasi</a></li>
+              <li><a href="#" className="text-sm hover:underline">Harga</a></li>
+            </ul>
+          </div>
+
+          {/* Perusahaan Links */}
+          <div className="w-full sm:w-1/2 lg:w-1/5 mb-8">
+            <h4 className="font-bold mb-4">PERUSAHAAN</h4>
+            <ul>
+              <li><a href="#" className="text-sm hover:underline">Tentang Kami</a></li>
+              <li><a href="#" className="text-sm hover:underline">Teknologi Kami</a></li>
+              <li><a href="#" className="text-sm hover:underline">Hubungi Kami</a></li>
+            </ul>
           </div>
         </div>
-         </div>
-      <div className="border-t border-white mt-6 pt-6 text-center">
-        <p className="text-black">Created By Yayasan Pendidikan | All Rights Are Reserved!</p>
+
+        {/* Bottom Section */}
+        <div className="flex justify-between items-center mt-8">
+          {/* Copyright */}
+          <p className="text-sm">&copy; 2004-2024 hostinger.co.id - Web Hosting Premium, Layanan Cloud, VPS, & Registrasi Domain.</p>
+          
+          {/* Social Media Links */}
+          <div className="flex">
+            <a href="#" className="text-gray-500 hover:text-blue-500 mx-2">
+              <i className="fab fa-linkedin"></i>
+            </a>
+            <a href="#" className="text-gray-500 hover:text-blue-500 mx-2">
+              <i className="fab fa-facebook"></i>
+            </a>
+            <a href="#" className="text-gray-500 hover:text-blue-500 mx-2">
+              <i className="fab fa-instagram"></i>
+            </a>
+            <a href="#" className="text-gray-500 hover:text-blue-500 mx-2">
+              <i className="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   );
