@@ -28,6 +28,9 @@ import Forum from './components/Forum/Forum';
 import Comments from './components/Forum/Comments';
 import Leaderboard from './components/Badges/Leaderboard';
 
+// Admin
+import Kurikulum from './pages/AdminPage/KurikulumPage';
+
 const AppRoutes = () => {
   return (
     <Router>
@@ -54,6 +57,7 @@ const AppRoutes = () => {
           
           <Route element={<PrivateRoute roles={['admin']} />}>
             <Route path="/admin" element={<AdminPage />} /> {/* Admin user list */}
+            <Route path="/kurikulum" element={<Kurikulum />} />         
           </Route>
 
           <Route element={<PrivateRoute roles={['instructor']} />}>

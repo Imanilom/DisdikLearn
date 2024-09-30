@@ -31,6 +31,8 @@ const Header = () => {
     }
   };
 
+  const isAdmin = user?.role === 'admin';
+
   return (
     <header className="bg-white p-3 text-black shadow-sm">
       <div className="container mx-auto flex justify-between items-center">
@@ -39,20 +41,22 @@ const Header = () => {
         </div>
 
         {/* Centered menu items */}
-        <div className="hidden lg:flex flex-1 justify-center items-center space-x-4">
-          <button
-            className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
-            onClick={() => scrollToSection('about')}
-          >
-            About
-          </button>
-          <button
-            className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
-            onClick={() => scrollToSection('services')}
-          >
-            Services
-          </button>
-        </div>
+        {!isAdmin && (
+          <div className="hidden lg:flex flex-1 justify-center items-center space-x-4">
+            <button
+              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
+              onClick={() => scrollToSection('about')}
+            >
+              About
+            </button>
+            <button
+              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
+              onClick={() => scrollToSection('services')}
+            >
+              Services
+            </button>
+          </div>
+        )}
 
         {/* Profile dropdown or login button */}
         {user ? (
@@ -86,14 +90,12 @@ const Header = () => {
                 >
                   Dashboard
                 </button>
-
                 <button
                   className="block w-full text-left px-4 py-2 text-black rounded-md hover:bg-gray-100"
                   onClick={() => { navigate('/Leaderboard'); setIsDropdownOpen(false); }}
                 >
                   Rangking
                 </button>
-
                 <button
                   className="block w-full text-left px-4 py-2 text-black rounded-md hover:bg-gray-100"
                   onClick={handleLogout}
@@ -152,18 +154,22 @@ const Header = () => {
             </div>
 
             <nav className="mt-4">
-              <button
-                className="block w-full text-left px-4 py-2 text-black rounded-md transition-transform duration-300 ease-in-out transform hover:shadow-lg hover:scale-105"
-                onClick={() => { scrollToSection('about'); toggleSidebar(); }}
-              >
-                About
-              </button>
-              <button
-                className="block w-full text-left px-4 py-2 text-black rounded-md transition-transform duration-300 ease-in-out transform hover:shadow-lg hover:scale-105"
-                onClick={() => { scrollToSection('services'); toggleSidebar(); }}
-              >
-                Services
-              </button>
+              {!isAdmin && (
+                <>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-black rounded-md transition-transform duration-300 ease-in-out transform hover:shadow-lg hover:scale-105"
+                    onClick={() => { scrollToSection('about'); toggleSidebar(); }}
+                  >
+                    About
+                  </button>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-black rounded-md transition-transform duration-300 ease-in-out transform hover:shadow-lg hover:scale-105"
+                    onClick={() => { scrollToSection('services'); toggleSidebar(); }}
+                  >
+                    Services
+                  </button>
+                </>
+              )}
             </nav>
           </div>
         </div>
