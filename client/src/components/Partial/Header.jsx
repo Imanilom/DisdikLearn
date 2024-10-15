@@ -38,12 +38,8 @@ const Header = () => {
     }
   };
 
-<<<<<<< HEAD:e-learning-frontend/src/components/Partial/Header.jsx
   const isLoginPage = location.pathname === '/login';
   const isRegisterPage = location.pathname === '/register';
-=======
-  const isAdmin = user?.role === 'admin';
->>>>>>> 3ec14d4b42b48d29f8daf920d6c17ed7f4b0b375:client/src/components/Partial/Header.jsx
 
   return (
     <header className="bg-white p-3 text-black shadow-sm">
@@ -52,7 +48,6 @@ const Header = () => {
           <img src={logo} alt="Platform Logo" className="h-10" />
         </div>
 
-<<<<<<< HEAD:e-learning-frontend/src/components/Partial/Header.jsx
         <div className="hidden lg:flex flex-1 justify-center items-center space-x-4">
           {!isLoginPage && !isRegisterPage && (
             <>
@@ -169,81 +164,6 @@ const Header = () => {
             </div>
           )}
         </div>
-=======
-        {/* Centered menu items */}
-        {!isAdmin && (
-          <div className="hidden lg:flex flex-1 justify-center items-center space-x-4">
-            <button
-              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
-              onClick={() => scrollToSection('about')}
-            >
-              About
-            </button>
-            <button
-              className="px-2 py-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-gray-200"
-              onClick={() => scrollToSection('services')}
-            >
-              Services
-            </button>
-          </div>
-        )}
-
-        {/* Profile dropdown or login button */}
-        {user ? (
-          <div className="relative">
-            <button
-              className="flex items-center space-x-2 hover:bg-gray-100 font-bold px-3 py-2 rounded-md"
-              onClick={toggleDropdown}
-            >
-              <span>{user.name}</span>
-              <svg
-                className={`w-4 h-4 transform transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </button>
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
-                <button
-                  className="block w-full text-left px-4 py-2 text-black rounded-md hover:bg-gray-100"
-                  onClick={() => { navigate('/profile'); setIsDropdownOpen(false); }}
-                >
-                  Profile
-                </button>
-                <button
-                  className="block w-full text-left px-4 py-2 text-black rounded-md hover:bg-gray-100"
-                  onClick={() => { navigate('/dashboard'); setIsDropdownOpen(false); }}
-                >
-                  Dashboard
-                </button>
-                <button
-                  className="block w-full text-left px-4 py-2 text-black rounded-md hover:bg-gray-100"
-                  onClick={() => { navigate('/Leaderboard'); setIsDropdownOpen(false); }}
-                >
-                  Rangking
-                </button>
-                <button
-                  className="block w-full text-left px-4 py-2 text-black rounded-md hover:bg-gray-100"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <button
-            className="block text-left px-4 py-2 text-black rounded-md transition-transform duration-300 ease-in-out transform hover:shadow-lg hover:scale-105"
-            onClick={() => navigate('/login')}
-          >
-            Login
-          </button>
-        )}
->>>>>>> 3ec14d4b42b48d29f8daf920d6c17ed7f4b0b375:client/src/components/Partial/Header.jsx
 
         <button
           className="lg:hidden p-2 rounded-md focus:outline-none"
@@ -283,7 +203,6 @@ const Header = () => {
             </div>
 
             <nav className="mt-4">
-<<<<<<< HEAD:e-learning-frontend/src/components/Partial/Header.jsx
               {isLoginPage || isRegisterPage ? (
                 <>
                   <button
@@ -300,9 +219,6 @@ const Header = () => {
                   </button>
                 </>
               ) : (
-=======
-              {!isAdmin && (
->>>>>>> 3ec14d4b42b48d29f8daf920d6c17ed7f4b0b375:client/src/components/Partial/Header.jsx
                 <>
                   <button
                     className="block w-full text-left px-4 py-2 text-black rounded-md transition-transform duration-300 ease-in-out transform hover:shadow-lg hover:scale-105"

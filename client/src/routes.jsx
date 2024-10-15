@@ -27,7 +27,6 @@ import ForumPostList from './components/Forum/ForumList';
 import Forum from './components/Forum/Forum';
 import Comments from './components/Forum/Comments';
 import Leaderboard from './components/Badges/Leaderboard';
-<<<<<<< HEAD:e-learning-frontend/src/routes.jsx
 import LmsPKBM from './components/Partial/LmsPKBM';
 import LKP from './components/Partial/LKP'
 import Team from './components/Partial/Team';
@@ -38,12 +37,7 @@ import Marketing from './components/Partial/Marketing';
 import Printing from './components/Partial/Printing';
 import Menjahit from './components/Partial/Menjahit';
 import Pendidikan from './components/Partial/Pendidikan';
-=======
-
-// Admin
 import Kurikulum from './pages/AdminPage/KurikulumPage';
-
->>>>>>> 3ec14d4b42b48d29f8daf920d6c17ed7f4b0b375:client/src/routes.jsx
 const AppRoutes = () => {
 
   return (
